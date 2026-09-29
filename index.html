@@ -6,8 +6,7 @@
 <meta name="color-scheme" content="light dark">
 <title>Roadmap: crear un producto digital</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&family=Archivo+Black&family=Space+Mono:wght@400;700&family=Quicksand:wght@500;700&family=Outfit:wght@400;600;800&family=Inter:wght@400;600;800&display=swap">
-<style>
-/* ============================================================
+<style>/* ============================================================
    CAPA 1 — TOKENS SEMANTICOS
    Cada estilo declara estos 13 roles. La capa 3 (componentes)
    NUNCA habla de un color concreto, solo de estos roles.
@@ -17,24 +16,22 @@
   --c-ink:#1b1f27; --c-ink2:#6b7280; --c-ink-on:#111;
   --c-acc:#ffd60a; --c-prog:#7dd3a8; --c-done:#bbf0d0; --c-brd:#1b1f27;
   --c-sh:#0000001f; --c-ov:#00000059; --c-foc:#2f6fed;
+  --c-band:#111318; --c-band-on:#f4f6fb;   /* franja oscura fija: no se invierte con el tema */
+  /* Barra del %. El relleno es el color de PROGRESO del tema (--c-prog), igual que
+     las barras de cada tarjeta (.pb i): en claro es verde, en brutal oscuro naranja,
+     en neo azul, en glass violeta. NO se fija un color: rompe el esquema.
+     --c-band-acc es ese mismo color de PROGRESO pero LEVANTADO para que el texto se
+     lea sobre la franja oscura, porque en algunos temas --c-prog es demasiado oscuro
+     (#c2410c sobre #111318 = 3.6:1, no pasa AA). */
+  --c-band-acc:#7dd3a8; --c-band-sur:#0a0c10;
   --grd:none;                      /* fondo degradado del body, si el estilo lo usa */
-}
-:root[data-theme="dark"]:not([data-style="brutal"]):not([data-style="glass"]){
-  --c-bg:#161a20; --c-sur:#20242c; --c-sur2:#20242c;
-  --c-ink:#eee; --c-ink2:#9aa1af; --c-ink-on:#111;
-  --c-acc:#d4a017; --c-prog:#2f6b4f; --c-done:#1f3b2c; --c-brd:#8a93a3;
-  --c-sh:#00000066; --c-ov:#000000a6; --c-foc:#7aa2ff;
 }
 :root[data-theme="dark"][data-style="brutal"]{
   --c-bg:#0b0b0b; --c-sur:#161616; --c-sur2:#2a2a2a;
   --c-ink:#fff; --c-ink2:#ccc; --c-ink-on:#111;
   --c-acc:#ffe600; --c-prog:#c2410c; --c-done:#fff; --c-brd:#fff;
+  --c-band-acc:#ff5a1f;   /* el naranja del tema (--c-foc) aclarado: 6:1 */
   --c-sh:#000000a6; --c-ov:#000000b3; --c-foc:#ff5a1f;
-}
-:root[data-theme="dark"][data-style="glass"]{
-  --c-ink:#fff; --c-ink2:#d7d9e2; --c-ink-on:#111;
-  --c-acc:rgba(255,255,255,.2); --c-prog:#a78bfa; --c-done:rgba(255,255,255,.26);
-  --c-brd:rgba(255,255,255,.5); --c-ov:#000000a6; --c-foc:#a78bfa;
 }
 
 /* ============================================================
@@ -65,33 +62,7 @@ html[data-style="neo"][data-theme="dark"]{
   --c-bg:#1e2230; --c-sur:#1e2230; --c-sur2:#252a3a; --c-ink:#fff; --c-ink2:#aab3c9;
   --c-ink-on:#fff; --c-acc:#3d4a63; --c-prog:#5b73aa; --c-done:#3d4a63; --c-brd:#3d4a63;
   --c-foc:#93a8d6; --neo-sh:#151824; --neo-hi:#282e40;
-}
-html[data-style="glass"]{
-  --r:18px; --bw:1px; --sx:0px; --sy:8px; --sb:24px; --sc:rgba(31,38,80,.15);
-  --scase:none; --ff:"Outfit",system-ui,sans-serif; --ff2:system-ui,sans-serif;
-  --track-h:12px; --hair:solid; --press:none;
-  --c-bg:transparent; --c-sur:rgba(255,255,255,.28); --c-sur2:rgba(255,255,255,.2);
-  --c-ink:#1b1f2e; --c-ink2:#4a5266; --c-ink-on:#fff;
-  --c-acc:rgba(255,255,255,.55); --c-prog:#7c5cff; --c-done:rgba(255,255,255,.65);
-  --c-brd:rgba(255,255,255,.5); --c-foc:#7c5cff;
-  --grd:linear-gradient(135deg,#8ec5fc,#e0c3fc 45%,#f6d5f7);
-}
-html[data-style="glass"][data-theme="dark"],html[data-style="glass"]:root:not([data-theme="light"]){
-  --c-ink:#fff; --c-ink2:#d7d9e2; --c-acc:rgba(255,255,255,.16);
-  --c-sur:rgba(255,255,255,.08); --c-sur2:rgba(255,255,255,.08);
-  --c-done:rgba(255,255,255,.22); --c-prog:#a78bfa; --c-foc:#a78bfa;
-  --grd:linear-gradient(135deg,#141826,#241f45 55%,#2c1f3f);
-}
-html[data-style="mini"]{
-  --r:0px; --bw:1px; --sx:0px; --sy:0px; --sb:0px; --sc:transparent;
-  --scase:none; --ff:"Inter",system-ui,sans-serif; --ff2:system-ui,sans-serif;
-  --track-h:6px; --hair:solid; --press:none;
-  --c-bg:#fff; --c-sur:#fff; --c-sur2:#eee; --c-ink:#111; --c-ink2:#8a8a8a;
-  --c-ink-on:#fff; --c-acc:#fff; --c-prog:#111; --c-done:#fff; --c-brd:#111; --c-foc:#111;
-}
-html[data-style="mini"][data-theme="dark"]{
-  --c-bg:#0c0c0c; --c-sur:#0c0c0c; --c-sur2:#1c1c1c; --c-ink:#fff; --c-ink2:#8a8a8a;
-  --c-ink-on:#111; --c-acc:#0c0c0c; --c-prog:#f2f2f2; --c-done:#0c0c0c; --c-brd:#fff; --c-foc:#f2f2f2;
+  --c-band-acc:#93a8d6;   /* el azul del tema (--c-foc) para las letras */
 }
 
 /* ============================================================
@@ -131,10 +102,11 @@ header p.lede+.lede{margin-top:4px;font-size:13px}
 .now .empty{font:700 15px var(--ff)}
 
 /* --- stats --- */
-.stats{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:center;margin:0 0 0 auto;
-  max-width:820px;font-size:13px;color:var(--c-ink2)}
-.stats span{display:flex;align-items:baseline;gap:6px}
-.stats b{font:700 19px var(--ff);color:var(--c-ink)}
+.stats{display:flex;flex-wrap:wrap;gap:4px 24px;justify-content:center;align-items:baseline;
+  margin:18px 0 0;padding:11px 18px;background:var(--c-band);color:var(--c-band-on);
+  border-radius:var(--r);box-shadow:var(--sx) var(--sy) var(--sb) var(--sc);font-size:13px}
+.stats span{display:flex;align-items:baseline;gap:6px;opacity:.72}
+.stats b{font:700 19px var(--ff);color:var(--c-band-on);opacity:1}
 
 /* --- presets --- */
 /* fila: [Configurar roadmap] [lista de roadmaps] [Nuevo] */
@@ -145,6 +117,8 @@ header p.lede+.lede{margin-top:4px;font-size:13px}
 .rowbar>button:hover{transform:translateY(-2px)}
 .rowbar>button:active{transform:var(--press)}
 .rowbar>button.primary{background:var(--c-acc);color:var(--c-ink-on);border-color:var(--c-ink)}
+/* --- separador --- */
+.sep{border:0;border-top:2px solid var(--c-brd);margin:18px 0 0;opacity:.55}
 
 /* buscador de pasos */
 
@@ -202,12 +176,16 @@ header p.lede+.lede{margin-top:4px;font-size:13px}
 .titlebar input:focus{border-bottom-color:var(--c-brd)}
 
 /* --- progress --- */
-.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--c-acc);margin-top:18px;
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--c-band);
+  color:var(--c-band-acc);margin-top:18px;
   border-bottom:var(--bw) solid var(--c-brd);padding:8px 16px}
 .bar>div{max-width:1180px;margin:0 auto;padding:0 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.track{flex:1;height:var(--track-h);border:var(--bw) solid var(--c-brd);background:var(--c-sur);
+.track{flex:1;height:var(--track-h);border:var(--bw) solid var(--c-brd);background:var(--c-band-sur);
   border-radius:calc(var(--r) / 1.5);overflow:hidden}
-.fill{height:100%;width:0;background:var(--c-ink-on);transition:width .3s}
+/* el relleno es el color de PROGRESO del tema, como el de las barras de cada
+   tarjeta (.pb i). Antes era --c-ink-on (token de TEXTO: negro sobre negro), y
+   despues --c-pfill (un naranja fijo que rompia el esquema en los temas claros). */
+.fill{height:100%;width:0;background:var(--c-prog);transition:width .3s}
 #pct{font:700 17px var(--ff);min-width:3.6ch;text-align:right}
 #rem{font:700 13px var(--ff2);white-space:nowrap;opacity:.85}
 
@@ -252,7 +230,6 @@ header p.lede+.lede{margin-top:4px;font-size:13px}
 .mod.done .dot{background:var(--c-done)}
 .mod.off .dot{background:transparent;border:1px solid var(--c-ink2)}
 .mod .pin{font-size:11px}
-
 
 /* --- footer --- */
 .foot{max-width:980px;margin:0 auto;padding:18px 16px calc(30px + env(safe-area-inset-bottom,0px));
@@ -387,7 +364,8 @@ html[data-style="brutal"] .ph.idle{color:var(--c-ink)}
 html[data-style="brutal"] h1{text-transform:uppercase;letter-spacing:-.03em;font-size:clamp(30px,7vw,64px)}
 html[data-style="brutal"] header p.lede{text-align:left;border-left:7px solid var(--c-ink);padding-left:13px;
   color:var(--c-ink);max-width:64ch}
-html[data-style="brutal"] .stats,html[data-style="brutal"] .pre,html[data-style="brutal"] .lg{justify-content:flex-start}
+/* solo los presets se alinean a la izquierda; la leyenda mantiene su centrado */
+html[data-style="brutal"] .pre{justify-content:flex-start}
 html[data-style="brutal"] .pre .plab{text-align:left}
 html[data-style="brutal"] .foot{font-size:11px;opacity:.8}
 html[data-style="brutal"] .res button,html[data-style="brutal"] html[data-style="brutal"] .noteBox{box-shadow:4px 4px 0 var(--c-brd)}
@@ -407,7 +385,7 @@ html[data-style="neo"] .menu button[aria-current=true]{
 html[data-style="neo"] .menu{box-shadow:8px 8px 18px var(--neo-sh),-8px -8px 18px var(--neo-hi)}
 html[data-style="neo"] .track,html[data-style="neo"] .pb,html[data-style="neo"] .noteBox{
   box-shadow:inset 3px 3px 6px var(--neo-sh),inset -3px -3px 6px var(--neo-hi)}
-html[data-style="neo"] .fill{background:var(--c-prog);border-radius:999px}
+html[data-style="neo"] .fill{border-radius:999px}
 html[data-style="neo"] .ph.idle,html[data-style="neo"] .mod.off{
   box-shadow:inset 4px 4px 8px var(--neo-sh),inset -4px -4px 8px var(--neo-hi);color:var(--c-ink2)}
 html[data-style="neo"] .mod.done{box-shadow:inset 4px 4px 8px var(--neo-sh),inset -4px -4px 8px var(--neo-hi)}
@@ -417,55 +395,6 @@ html[data-style="neo"] .box{box-shadow:2px 2px 5px var(--neo-sh),-2px -2px 5px v
 html[data-style="neo"] .item[aria-checked=true] .box{background:var(--c-prog);color:#fff}
 html[data-style="neo"] .dr{box-shadow:-10px 0 24px var(--neo-sh)}
 html[data-style="neo"] .its{border-left:2px solid var(--c-sur2)}
-
-
-/* glass: blur + translucido */
-html[data-style="glass"] .ph,html[data-style="glass"] .mod,html[data-style="glass"] .topnav,
-html[data-style="glass"] .bar,html[data-style="glass"] .menu,html[data-style="glass"] .dr,
-html[data-style="glass"] .modal,html[data-style="glass"] .now,html[data-style="glass"] .tg,
-html[data-style="glass"] .nav>button,html[data-style="glass"] .pop>button,html[data-style="glass"] .res button{
-  backdrop-filter:blur(14px) saturate(160%);-webkit-backdrop-filter:blur(14px) saturate(160%);
-  background:var(--c-sur);border:1px solid var(--c-brd)}
-html[data-style="glass"] .bar{background:var(--c-acc)}
-html[data-style="glass"] .menu button{background:none;border-bottom:1px solid var(--c-brd)}
-html[data-style="glass"] .pre button:hover,html[data-style="glass"] .nav>button:hover,
-html[data-style="glass"] .pop>button:hover,html[data-style="glass"] .menu button[aria-current=true]{
-  background:var(--c-prog);color:#fff}
-html[data-style="glass"] .pre button[aria-pressed=true],html[data-style="glass"] .nav>button[aria-pressed=true]{
-  background:var(--c-prog);color:#fff;border-color:var(--c-prog)}
-html[data-style="glass"] .track,html[data-style="glass"] .pb{background:var(--c-sur2)}
-html[data-style="glass"] .br,html[data-style="glass"] .sp{stroke:var(--c-ink);opacity:.4}
-html[data-style="glass"] .x,html[data-style="glass"] .sw,html[data-style="glass"] .box{
-  border:1px solid var(--c-brd);background:var(--c-sur2)}
-html[data-style="glass"] .sw[aria-checked=true]{background:var(--c-prog)}
-html[data-style="glass"] .sw[aria-checked=true]::after{background:#fff}
-html[data-style="glass"] .item[aria-checked=true] .box{background:var(--c-prog);border-color:var(--c-prog);color:#fff}
-html[data-style="glass"] .noteBox{background:var(--c-sur2)}
-html[data-style="glass"] .mod.off{box-shadow:none}
-html[data-style="glass"] .list{border-color:var(--c-brd)}
-
-/* mini: filete, nada de sombra */
-html[data-style="mini"] .ph{background:none;border-width:0 0 1px 0;box-shadow:none;padding:8px 0}
-html[data-style="mini"] .ph.idle,html[data-style="mini"] .ph.done{background:none}
-html[data-style="mini"] .ph small{background:none;color:var(--c-ink2);padding:0}
-html[data-style="mini"] .pre button[aria-pressed=true],html[data-style="mini"] .nav>button[aria-pressed=true]{
-  background:var(--c-ink);color:var(--c-sur)}
-html[data-style="mini"] .pre button:hover,html[data-style="mini"] .nav>button:hover,
-html[data-style="mini"] .pop>button:hover{background:var(--c-ink);color:var(--c-sur)}
-html[data-style="mini"] .menu button[aria-current=true]{background:var(--c-sur2);color:var(--c-ink)}
-html[data-style="mini"] .br,html[data-style="mini"] .sp{stroke:var(--c-ink2);stroke-dasharray:none;stroke-width:1}
-html[data-style="mini"] .mod:hover,html[data-style="mini"] .pre button:hover{transform:none;background:var(--c-sur2)}
-html[data-style="mini"] .mod.off{box-shadow:none}
-html[data-style="mini"] .now,html[data-style="mini"] .modal,html[data-style="mini"] .dr,html[data-style="mini"] .dr,
-html[data-style="mini"] .track,html[data-style="mini"] .pb,html[data-style="mini"] .noteBox,
-html[data-style="mini"] .tg,html[data-style="mini"] .res button,html[data-style="mini"] html[data-style="mini"] .item[aria-checked=true] .box{background:var(--c-ink);color:var(--c-sur)}
-html[data-style="mini"] .sw[aria-checked=true]{background:var(--c-ink)}
-html[data-style="mini"] .sw[aria-checked=true]::after{background:var(--c-sur)}
-html[data-style="mini"] .fill{background:var(--c-ink)}
-html[data-style="mini"] .its{border-left:1px solid var(--c-sur2)}
-html[data-style="mini"] h1{font-weight:800;letter-spacing:-.02em}
-html[data-style="mini"] .now{border-width:1px}
-
 
 /* ============================================================
    CAPA 5 — IMPRESION
@@ -494,19 +423,13 @@ body.printing #printArea blockquote{margin:6px 0 0;padding:6px 10px;border-left:
   <p class="lede">Seguí el camino central, etapa por etapa. Tocá una rama para ver sus pasos y activala solo si tu producto la necesita. Tu progreso se guarda en este navegador.</p>
 
   <div class="rowbar">
-    <button id="cfgbtn" class="primary">⚙ <span class="lbl">Configurar roadmap</span></button>
     <label class="sr" for="rmsel">Roadmap actual</label>
     <select id="rmsel" title="Tus roadmaps"></select>
     <button id="newbtn">＋ <span class="lbl">Nuevo</span></button>
+    <button id="cfgbtn" class="primary">⚙ <span class="lbl">Configurar roadmap</span></button>
   </div>
 
-  <div class="lg">
-    <span><i class="a"></i>Etapa</span>
-    <span><i></i>Rama activa</span>
-    <span><i class="b"></i>En curso</span>
-    <span><i class="c"></i>Hecha</span>
-    <span><i class="d"></i>Fuera de tu roadmap</span>
-  </div>
+  <hr class="sep" aria-hidden="true">
 
   <nav class="topnav" aria-label="Herramientas">
     <div class="tnwrap">
@@ -519,8 +442,6 @@ body.printing #printArea blockquote{margin:6px 0 0;padding:6px 10px;border-left:
             <button role="menuitem" data-sty="brutal">Brutalismo</button>
             <button role="menuitem" data-sty="clean">Clásico</button>
             <button role="menuitem" data-sty="neo">Neomorfismo</button>
-            <button role="menuitem" data-sty="glass">Glassmorphism</button>
-            <button role="menuitem" data-sty="mini">Minimalista</button>
           </div>
         </div>
 
@@ -545,6 +466,10 @@ body.printing #printArea blockquote{margin:6px 0 0;padding:6px 10px;border-left:
 
   <div class="now" id="now" aria-live="polite"></div>
 
+  <div class="stats" id="stats" role="group" aria-label="Resumen del roadmap"></div>
+
+</header>
+
   <div class="bar">
     <div>
       <span id="pct">0%</span>
@@ -552,10 +477,17 @@ body.printing #printArea blockquote{margin:6px 0 0;padding:6px 10px;border-left:
         <div class="fill" id="fill"></div>
       </div>
       <span id="rem"></span>
-      <span class="stats" id="stats"></span>
     </div>
   </div>
-</header>
+
+  <div class="lg">
+    <span><i class="a"></i>Etapa</span>
+    <span><i></i>Rama activa</span>
+    <span><i class="b"></i>En curso</span>
+    <span><i class="c"></i>Hecha</span>
+    <span><i class="d"></i>Fuera de tu roadmap</span>
+  </div>
+
 
 
 <div id="cv"><svg id="ln" aria-hidden="true"></svg><main id="app"></main></div>
@@ -588,6 +520,8 @@ body.printing #printArea blockquote{margin:6px 0 0;padding:6px 10px;border-left:
   <div class="body">
     <p class="hint" style="margin-bottom:14px">Elegí el alcance. Esto no se puede deshacer.</p>
     <div class="list" id="resetList"></div>
+    <button class="cta" id="resetGo" data-rz="1"
+      style="background:var(--c-ink);color:var(--c-sur)">Borrar lo elegido</button>
     <button class="cta" id="resetCancel" style="background:var(--c-sur);color:var(--c-ink)">Cancelar</button>
   </div>
 </div>
@@ -636,6 +570,15 @@ var MINIMA=["prob","val","mvp","mny","arq","fe","be","db","env","test","sec","le
    + esfuerzo estimado, tarjeta "que hago hoy", colapsar etapas, filtro y busqueda
    ================================================================ */
 var SCHEMA_VERSION = 2;
+/* Estilos disponibles. STY es la LISTA BLANCA y va arriba, junto al resto de la
+   config, porque freshState() corre en el arranque y necesita STY_DEFAULT ya
+   asignado: si queda mas abajo, `var` lo hoiste SIN VALOR y el estado nace con
+   style:undefined (se auto-reparaba por styOk, pero a costa de depender de eso). */
+var STY = {brutal:"Brutalismo", clean:"Clásico", neo:"Neomorfismo"};
+var STY_DEFAULT = "brutal";
+/* normaliza contra la lista blanca: un estilo desconocido (un export viejo, un
+   localStorage de cuando existian glass y mini) cae al default en vez de romper */
+function styOk(s){ return Object.prototype.hasOwnProperty.call(STY, s) ? s : STY_DEFAULT; }
 var IDX_KEY = "rpd.v2:index";
 var D_KEY = function(id){ return "rpd.v2:d:" + id; };
 var DAYS = {1:0.5, 2:1, 3:2};
@@ -698,7 +641,7 @@ var SCHEMA = fingerprint();
 /* ---------- estado ---------- */
 function freshState(){
   return {v:SCHEMA_VERSION, on:{}, chk:{}, notes:{}, eff:{}, title:"",
-    style:"brutal", theme:null, filter:0, collapsed:{}, help:0};
+    style:STY_DEFAULT, theme:null, filter:0, collapsed:{}, help:0};
 }
 function mergeFresh(r){
   var b = freshState();
@@ -746,7 +689,7 @@ function migrateV1(){
     var r = JSON.parse(raw);
     if(!r || !r.chk) return null;
     var st = freshState();
-    st.title = r.title || ""; st.style = r.style || "brutal"; st.theme = r.theme || null;
+    st.title = r.title || ""; st.style = styOk(r.style); st.theme = r.theme || null;
     st.on = r.on || {}; st.notes = r.notes || {};
     P.forEach(function(p){ p[2].forEach(function(m){
       m[3].forEach(function(g,si){
@@ -1083,7 +1026,6 @@ function closeBranch(){
 }
 
 /* ---------- tema / estilos ---------- */
-var STY = {brutal:"Brutalismo", clean:"Clásico", neo:"Neomorfismo", glass:"Glassmorphism", mini:"Minimalista"};
 function sysDark(){ return !!(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches); }
 /* "auto" no es un valor de tema: hay que resolverlo contra el sistema,
    porque data-theme="auto" no lo matchea ningun selector de CSS */
@@ -1091,7 +1033,8 @@ function resolvedTheme(){
   return (S.theme === "dark" || S.theme === "light") ? S.theme : (sysDark() ? "dark" : "light");
 }
 function applyChrome(){
-  var s = S.style || "brutal", r = document.documentElement;
+  var s = styOk(S.style), r = document.documentElement;
+  if(S.style !== s) S.style = s;
   r.dataset.style = s;
   $("#stybtn").innerHTML = "🎨 <span class='lbl'>" + STY[s] + "</span>";
   $$("#stymenu button").forEach(function(b){ b.setAttribute("aria-current", b.dataset.sty === s); });
@@ -1419,21 +1362,28 @@ document.addEventListener("click", function(e){
     else printPDF();
     return;
   }
-  /* --- alcance de borrado --- */
+  /* --- alcance de borrado ---
+     OJO: el alcance NO viene del boton. El boton solo dice "ejecutar" (data-rz="1");
+     el alcance son las CASILLAS tildadas. Antes se comparaba b.dataset.rz contra
+     "roadmap", que es un valor de casilla: la rama nunca se tomaba, caia al borrado
+     generico (donde nada matchea "roadmap"), no borraba nada y cerraba el modal. */
   if(b.dataset.rz){
-    var rz = b.dataset.rz;
-    if(rz === "roadmap"){
-      if(IDX.length <= 1){ alert("No podés borrar el único roadmap. Creá otro primero."); return; }
-      if(!confirm('Borrar "' + (currentName() || "Sin nombre") + '" y todos sus datos del navegador.\n\nNo se puede deshacer.')) return;
-      try{ localStorage.removeItem(D_KEY(RID)); }catch(err){}
-      IDX = IDX.filter(function(x){ return x.id !== RID; });
+    var boxes = $$("#resetList input:checked");
+    if(!boxes.length){ alert("Elegí al menos una cosa para borrar."); return; }
+    var todo = boxes.filter(function(x){ return x.value === "roadmap"; })[0];
+    if(todo){
+      /* Se puede borrar el ultimo: ensureRoadmaps() crea uno nuevo vacio, asi que
+         nunca quedamos sin roadmap. Antes el guard (IDX.length <= 1) lo impedia. */
+      if(!confirm('Borrar "' + (currentName() || "Sin nombre") + '" y todos sus datos del navegador.\n\n'
+                + "Se va a crear un roadmap nuevo y vacío en su lugar.\n\nNo se puede deshacer.")) return;
+      var muerto = RID;
+      try{ localStorage.removeItem(D_KEY(muerto)); }catch(err){}
+      IDX = IDX.filter(function(x){ return x.id !== muerto; });
       writeIdx();
       popLayer();
       ensureRoadmaps(); applyChrome(); update();
       return;
     }
-    var boxes = $$("#resetList input:checked");
-    if(!boxes.length){ alert("Elegí al menos una cosa para borrar."); return; }
     if(!confirm("Borrar:\n- " + boxes.map(function(x){ return x.parentNode.textContent.trim(); }).join("\n- ")
                 + "\n\nNo se puede deshacer.")) return;
     boxes.forEach(function(x){
