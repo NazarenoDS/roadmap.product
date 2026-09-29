@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="es" data-style="brutal" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Roadmap: crear un producto digital</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&family=Archivo+Black&family=Space+Mono:wght@400;700&family=Quicksand:wght@500;700&family=Outfit:wght@400;600;800&family=Inter:wght@400;600;800&display=swap">
+<style>
+/* ============================================================
+   CAPA 1 — TOKENS SEMANTICOS
+   Cada estilo declara estos 13 roles. La capa 3 (componentes)
+   NUNCA habla de un color concreto, solo de estos roles.
+   ============================================================ */
+:root{
+  --c-bg:#f8f9fc; --c-sur:#fff; --c-sur2:#eceef2;
+  --c-ink:#1b1f27; --c-ink2:#6b7280; --c-ink-on:#111;
+  --c-acc:#ffd60a; --c-prog:#7dd3a8; --c-done:#bbf0d0; --c-brd:#1b1f27;
+  --c-sh:#0000001f; --c-ov:#00000059; --c-foc:#2f6fed;
+  --grd:none;                      /* fondo degradado del body, si el estilo lo usa */
+}
+:root[data-theme="dark"]:not([data-style="brutal"]):not([data-style="glass"]){
+  --c-bg:#161a20; --c-sur:#20242c; --c-sur2:#20242c;
+  --c-ink:#eee; --c-ink2:#9aa1af; --c-ink-on:#111;
+  --c-acc:#d4a017; --c-prog:#2f6b4f; --c-done:#1f3b2c; --c-brd:#8a93a3;
+  --c-sh:#00000066; --c-ov:#000000a6; --c-foc:#7aa2ff;
+}
+:root[data-theme="dark"][data-style="brutal"]{
+  --c-bg:#0b0b0b; --c-sur:#161616; --c-sur2:#2a2a2a;
+  --c-ink:#fff; --c-ink2:#ccc; --c-ink-on:#111;
+  --c-acc:#ffe600; --c-prog:#c2410c; --c-done:#fff; --c-brd:#fff;
+  --c-sh:#000000a6; --c-ov:#000000b3; --c-foc:#ff5a1f;
+}
+:root[data-theme="dark"][data-style="glass"]{
+  --c-ink:#fff; --c-ink2:#d7d9e2; --c-ink-on:#111;
+  --c-acc:rgba(255,255,255,.2); --c-prog:#a78bfa; --c-done:rgba(255,255,255,.26);
+  --c-brd:rgba(255,255,255,.5); --c-ov:#000000a6; --c-foc:#a78bfa;
+}
+
+/* ============================================================
+   CAPA 2 — FLAVOR POR ESTILO
+   --r radio | --bw grosor de borde | --sx/--sy/--sb/--sc sombra dura
+   --scase mayusculas | --ff tipografia | --ff2 tipografia secundaria
+   --track-h alto de la barra | --hair estilo del separador
+   ============================================================ */
+html[data-style="clean"]{
+  --r:10px; --bw:2px; --sx:0px; --sy:0px; --sb:0px; --sc:transparent;
+  --scase:none; --ff:"Balsamiq Sans",system-ui,sans-serif; --ff2:system-ui,sans-serif;
+  --track-h:12px; --hair:dashed; --press:none;
+}
+html[data-style="brutal"]{
+  --r:0px; --bw:3px; --sx:4px; --sy:4px; --sb:0px; --sc:var(--c-brd);
+  --scase:uppercase; --ff:"Archivo Black","Arial Black",Impact,system-ui,sans-serif;
+  --ff2:"Space Mono",ui-monospace,Menlo,Consolas,monospace;
+  --track-h:20px; --hair:solid; --press:translate(2px,2px);
+}
+html[data-style="neo"]{
+  --r:16px; --bw:0px; --sx:7px; --sy:7px; --sb:14px; --sc:var(--neo-sh);
+  --scase:none; --ff:"Quicksand",system-ui,sans-serif; --ff2:system-ui,sans-serif;
+  --track-h:12px; --hair:solid; --press:none;
+  --neo-sh:#c3c8d4; --neo-hi:#ffffff;
+}
+:root[data-theme="dark"] html[data-style="neo"],
+html[data-style="neo"][data-theme="dark"]{
+  --c-bg:#1e2230; --c-sur:#1e2230; --c-sur2:#252a3a; --c-ink:#fff; --c-ink2:#aab3c9;
+  --c-ink-on:#fff; --c-acc:#3d4a63; --c-prog:#5b73aa; --c-done:#3d4a63; --c-brd:#3d4a63;
+  --c-foc:#93a8d6; --neo-sh:#151824; --neo-hi:#282e40;
+}
+html[data-style="glass"]{
+  --r:18px; --bw:1px; --sx:0px; --sy:8px; --sb:24px; --sc:rgba(31,38,80,.15);
+  --scase:none; --ff:"Outfit",system-ui,sans-serif; --ff2:system-ui,sans-serif;
+  --track-h:12px; --hair:solid; --press:none;
+  --c-bg:transparent; --c-sur:rgba(255,255,255,.28); --c-sur2:rgba(255,255,255,.2);
+  --c-ink:#1b1f2e; --c-ink2:#4a5266; --c-ink-on:#fff;
+  --c-acc:rgba(255,255,255,.55); --c-prog:#7c5cff; --c-done:rgba(255,255,255,.65);
+  --c-brd:rgba(255,255,255,.5); --c-foc:#7c5cff;
+  --grd:linear-gradient(135deg,#8ec5fc,#e0c3fc 45%,#f6d5f7);
+}
+html[data-style="glass"][data-theme="dark"],html[data-style="glass"]:root:not([data-theme="light"]){
+  --c-ink:#fff; --c-ink2:#d7d9e2; --c-acc:rgba(255,255,255,.16);
+  --c-sur:rgba(255,255,255,.08); --c-sur2:rgba(255,255,255,.08);
+  --c-done:rgba(255,255,255,.22); --c-prog:#a78bfa; --c-foc:#a78bfa;
+  --grd:linear-gradient(135deg,#141826,#241f45 55%,#2c1f3f);
+}
+html[data-style="mini"]{
+  --r:0px; --bw:1px; --sx:0px; --sy:0px; --sb:0px; --sc:transparent;
+  --scase:none; --ff:"Inter",system-ui,sans-serif; --ff2:system-ui,sans-serif;
+  --track-h:6px; --hair:solid; --press:none;
+  --c-bg:#fff; --c-sur:#fff; --c-sur2:#eee; --c-ink:#111; --c-ink2:#8a8a8a;
+  --c-ink-on:#fff; --c-acc:#fff; --c-prog:#111; --c-done:#fff; --c-brd:#111; --c-foc:#111;
+}
+html[data-style="mini"][data-theme="dark"]{
+  --c-bg:#0c0c0c; --c-sur:#0c0c0c; --c-sur2:#1c1c1c; --c-ink:#fff; --c-ink2:#8a8a8a;
+  --c-ink-on:#111; --c-acc:#0c0c0c; --c-prog:#f2f2f2; --c-done:#0c0c0c; --c-brd:#fff; --c-foc:#f2f2f2;
+}
+
+/* ============================================================
+   CAPA 3 — COMPONENTES (una sola vez, habla solo de tokens)
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px);
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;min-height:100vh;background:var(--c-bg);color:var(--c-ink);
+  font:400 15px/1.45 var(--ff2);background-image:var(--grd);background-attachment:fixed}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--c-foc);outline-offset:2px}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+/* --- header --- */
+header{max-width:1080px;margin:0 auto;padding:32px 18px 14px}
+h1{font:700 clamp(26px,5vw,42px)/1.1 var(--ff);margin:0}
+header p.lede{color:var(--c-ink2);margin:10px auto 0;max-width:60ch;text-align:center}
+header p.lede+.lede{margin-top:4px;font-size:13px}
+
+/* --- card "que hago hoy" --- */
+.now{display:flex;gap:14px;align-items:flex-start;margin:20px auto 0;max-width:820px;padding:0 16px;
+  background:var(--c-acc);color:var(--c-ink-on);border:var(--bw) solid var(--c-brd);
+  border-radius:var(--r);padding:14px 16px;box-shadow:var(--sx) var(--sy) var(--sb) var(--sc)}
+.now .nl{flex:1;min-width:0}
+.now b{display:block;font:700 11px var(--ff2);text-transform:uppercase;letter-spacing:.06em;opacity:.75}
+.now .nt{font:700 17px/1.25 var(--ff);margin:3px 0 2px}
+.now .ns{font-size:13px;opacity:.85}
+.now .ne{flex:none;font:700 12px var(--ff2);background:var(--c-ink-on);color:var(--c-acc);
+  padding:2px 8px;border-radius:999px}
+.now button{flex:none;align-self:center;background:var(--c-sur);color:var(--c-ink);
+  border:var(--bw) solid var(--c-brd);border-radius:var(--r);padding:8px 14px;
+  font:700 13px var(--ff);text-transform:var(--scase);box-shadow:var(--sx) var(--sy) var(--sb) var(--sc)}
+.now.done{background:var(--c-done)}
+.now .empty{font:700 15px var(--ff)}
+
+/* --- stats --- */
+.stats{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:center;margin:0 0 0 auto;
+  max-width:820px;font-size:13px;color:var(--c-ink2)}
+.stats span{display:flex;align-items:baseline;gap:6px}
+.stats b{font:700 19px var(--ff);color:var(--c-ink)}
+
+/* --- presets --- */
+/* fila: [Configurar roadmap] [lista de roadmaps] [Nuevo] */
+.rowbar{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;margin:18px auto 0;max-width:820px}
+.rowbar>button{display:inline-flex;align-items:center;gap:6px;padding:9px 14px;
+  border:var(--bw) solid var(--c-brd);border-radius:var(--r);background:var(--c-sur);color:var(--c-ink);
+  font:700 13px var(--ff);box-shadow:var(--sc);cursor:pointer;min-height:42px}
+.rowbar>button:hover{transform:translateY(-2px)}
+.rowbar>button:active{transform:var(--press)}
+.rowbar>button.primary{background:var(--c-acc);color:var(--c-ink-on);border-color:var(--c-ink)}
+
+/* buscador de pasos */
+
+.pre{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:0 0 14px;align-items:center}
+.pre .plab{width:100%;text-align:left;color:var(--c-ink2);font-size:13px;margin-bottom:2px}
+.pre button{border:var(--bw) solid var(--c-brd);background:var(--c-sur);color:var(--c-ink);
+  border-radius:var(--r);padding:5px 11px;font:700 12px var(--ff2);text-transform:var(--scase);
+  box-shadow:var(--sx) var(--sy) var(--sb) var(--sc);transition:transform .12s,box-shadow .12s}
+.pre button:hover{transform:translateY(-2px)}
+.pre button:active{transform:var(--press)}
+.pre button[aria-pressed=true]{background:var(--c-acc);color:var(--c-ink-on);font-weight:800}
+.pre .ghost{background:none;box-shadow:none;border-style:dashed;font-weight:400}
+
+/* --- leyenda --- */
+.lg{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:center;margin-top:16px;
+  font-size:12px;color:var(--c-ink2)}
+.lg span{display:flex;align-items:center;gap:6px}
+.lg i{width:24px;height:14px;border:var(--bw) solid var(--c-brd);border-radius:calc(var(--r) / 2);background:var(--c-sur)}
+.lg .a{background:var(--c-acc)}.lg .b{background:linear-gradient(90deg,var(--c-prog) 50%,var(--c-sur) 50%)}
+.lg .c{background:var(--c-done)}.lg .d{border-style:dashed;opacity:.55}
+
+/* --- nav --- */
+.topnav{position:relative;z-index:12;margin:14px auto 0;max-width:1180px;padding:0 16px;
+  background-image:var(--grd)}
+.tnwrap{max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:0}
+.nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;min-width:0;flex:1}
+.nav>button,.pop>button{font-size:13px;background:var(--c-sur);color:var(--c-ink);
+  border:var(--bw) solid var(--c-brd);border-radius:var(--r);padding:5px 11px;white-space:nowrap;
+  display:flex;align-items:center;gap:6px;box-shadow:var(--sx) var(--sy) var(--sb) var(--sc);
+  transition:transform .12s,box-shadow .12s}
+.nav>button:hover,.pop>button:hover{transform:translateY(-2px)}
+.nav>button:active,.pop>button:active{transform:var(--press)}
+.nav>button[aria-pressed=true]{background:var(--c-acc);color:var(--c-ink-on);font-weight:800}
+#rmsel{flex:1 1 180px;min-width:150px;max-width:240px;min-height:42px;font-size:14px;font-weight:700;
+  background:var(--c-sur);color:var(--c-ink);border:var(--bw) solid var(--c-brd);
+  border-radius:var(--r);padding:6px 10px;overflow:hidden;text-overflow:ellipsis}
+.pop{position:relative}
+.menu{position:absolute;left:0;top:calc(100% + 6px);background:var(--c-sur);border:var(--bw) solid var(--c-brd);
+  border-radius:var(--r);min-width:210px;box-shadow:var(--sx) var(--sy) var(--sb) var(--sc);overflow:hidden;z-index:25}
+#dlmenu{left:auto;right:0}
+.menu button{display:block;width:100%;text-align:left;background:none;color:var(--c-ink);
+  border:0;border-bottom:1px solid var(--c-sur2);border-radius:0;padding:10px 13px;font-size:13px}
+.menu button:last-child{border-bottom:0}
+.menu button:hover{background:var(--c-sur2)}
+.menu button[aria-current=true]{background:var(--c-acc);color:var(--c-ink-on);font-weight:700}
+
+.res button:hover{background:var(--c-acc);color:var(--c-ink-on)}
+.res button b{font-weight:800}
+
+/* --- titlebar --- */
+.titlebar{max-width:1180px;margin:0 auto;padding:6px 16px 2px}
+.titlebar input{display:block;width:100%;background:none;border:0;
+  border-bottom:2px solid var(--c-sur2);color:var(--c-ink);font:700 20px var(--ff);padding:4px 2px 8px;outline:none}
+.titlebar input::placeholder{color:var(--c-ink2);font-weight:400}
+.titlebar input:focus{border-bottom-color:var(--c-brd)}
+
+/* --- progress --- */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--c-acc);margin-top:18px;
+  border-bottom:var(--bw) solid var(--c-brd);padding:8px 16px}
+.bar>div{max-width:1180px;margin:0 auto;padding:0 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.track{flex:1;height:var(--track-h);border:var(--bw) solid var(--c-brd);background:var(--c-sur);
+  border-radius:calc(var(--r) / 1.5);overflow:hidden}
+.fill{height:100%;width:0;background:var(--c-ink-on);transition:width .3s}
+#pct{font:700 17px var(--ff);min-width:3.6ch;text-align:right}
+#rem{font:700 13px var(--ff2);white-space:nowrap;opacity:.85}
+
+/* --- canvas --- */
+#cv{position:relative;max-width:980px;margin:0 auto;padding:40px 16px 90px}
+#ln{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:visible}
+.br{fill:none;stroke:var(--c-ink);stroke-width:2;stroke-dasharray:6 5}
+.br.o{opacity:.28;stroke-dasharray:2 6}
+.sp{fill:none;stroke:var(--c-ink);stroke-width:3}
+.row{position:relative;z-index:1;display:grid;grid-template-columns:1fr minmax(240px,300px) 1fr;
+  column-gap:72px;row-gap:14px;align-items:center;margin-bottom:64px}
+.row:last-child{margin-bottom:0}
+.ph{grid-column:2;grid-row:1/span var(--n);text-align:center;background:var(--c-acc);color:var(--c-ink-on);
+  border:var(--bw) solid var(--c-brd);border-radius:var(--r);padding:12px 14px;font-family:var(--ff);
+  display:flex;flex-direction:column;gap:2px;box-shadow:var(--sx) var(--sy) var(--sb) var(--sc);cursor:pointer}
+.ph b{font:700 20px var(--ff)}
+.ph span{font:400 13px var(--ff2);opacity:.9}
+.ph small{font:700 12px var(--ff2);margin-top:3px;background:var(--c-ink-on);color:var(--c-acc);
+  padding:1px 7px;border-radius:999px;align-self:center}
+.ph .caret{font-size:11px;opacity:.7;margin-top:4px}
+.ph.done{background:var(--c-done)}
+.ph.done b{text-decoration:line-through}
+.ph.idle{background:var(--c-sur2);color:var(--c-ink2)}
+.ph.idle small{background:var(--c-ink2);color:var(--c-sur)}
+.mod{width:min(100%,250px);display:flex;justify-content:space-between;align-items:center;gap:10px;
+  text-align:left;font:400 15px var(--ff);color:var(--c-ink);border:var(--bw) solid var(--c-brd);
+  border-radius:var(--r);padding:9px 12px;box-shadow:var(--sx) var(--sy) var(--sb) var(--sc);
+  background:linear-gradient(90deg,var(--c-prog) var(--p,0%),var(--c-sur) var(--p,0%));
+  transition:transform .12s,box-shadow .12s}
+.mod.l{grid-column:1;justify-self:end}.mod.r{grid-column:3;justify-self:start}
+.mod .mt{display:flex;align-items:center;gap:6px;flex:1;min-width:0}
+.mod .mt>span:last-child{overflow-wrap:anywhere}
+.mod small{flex:none;font:700 11px var(--ff2);white-space:nowrap;opacity:.75;display:flex;align-items:center;gap:3px}
+.mod:hover{transform:translateY(-2px)}
+.mod:active{transform:var(--press)}
+.mod.done{background:var(--c-done)}
+.mod.done span{text-decoration:line-through}
+.mod.off{background:var(--c-sur);border-style:dashed;color:var(--c-ink2);box-shadow:none}
+.mod.off small{opacity:1}
+.mod.sel{outline:3px solid var(--c-prog);outline-offset:3px}
+.mod .dot{flex:none;width:8px;height:8px;border-radius:50%;background:var(--c-prog)}
+.mod.done .dot{background:var(--c-done)}
+.mod.off .dot{background:transparent;border:1px solid var(--c-ink2)}
+.mod .pin{font-size:11px}
+
+
+/* --- footer --- */
+.foot{max-width:980px;margin:0 auto;padding:18px 16px calc(30px + env(safe-area-inset-bottom,0px));
+  display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;justify-content:center;
+  border-top:var(--bw) solid var(--c-brd);font:400 13px var(--ff2);color:var(--c-ink2)}
+.foot a{color:var(--c-ink);font-weight:700;text-underline-offset:3px}
+.foot .ver{opacity:.6;font-size:11px}
+
+/* --- overlays --- */
+.bk{position:fixed;inset:0;z-index:15;background:var(--c-ov);opacity:0;pointer-events:none;transition:opacity .2s}
+.bk.show{opacity:1;pointer-events:auto}
+.dr{position:fixed;z-index:20;right:0;top:0;bottom:0;width:min(460px,100%);background:var(--c-bg);
+  border-left:var(--bw) solid var(--c-brd);transform:translateX(100%);visibility:hidden;
+  transition:transform .22s,visibility 0s .22s;display:flex;flex-direction:column;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.dr.open{transform:none;visibility:visible;transition:transform .22s}
+.dh{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;
+  border-bottom:1px solid var(--c-sur2)}
+.dh span{font:700 12px var(--ff2);text-transform:var(--scase);color:var(--c-ink2);overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
+#db{overflow:auto;padding:0 20px 28px;flex:1}
+#db h2{font:700 25px/1.15 var(--ff);margin:2px 0 12px}
+.ps{margin:0;color:var(--c-ink2);font:700 12px var(--ff2);text-transform:var(--scase)}
+.tg{display:flex;align-items:center;gap:10px;background:var(--c-sur2);border-radius:var(--r);padding:9px 12px;margin:14px 0}
+.sw{flex:none;position:relative;width:40px;height:23px;border-radius:999px;
+  border:var(--bw) solid var(--c-brd);background:var(--c-sur);padding:0}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;
+  background:var(--c-ink);transition:transform .15s}
+.sw[aria-checked=true]{background:var(--c-acc)}
+.sw[aria-checked=true]::after{transform:translateX(17px);background:var(--c-ink-on)}
+.pb{height:10px;border:var(--bw) solid var(--c-brd);border-radius:999px;overflow:hidden;margin:0 0 5px;background:var(--c-sur)}
+.pb i{display:block;height:100%;background:var(--c-prog);transition:width .25s}
+.pbs{display:flex;justify-content:space-between;font:700 12px var(--ff2);color:var(--c-ink2);margin-bottom:14px}
+#db h3{font:700 15px var(--ff);margin:18px 0 3px;display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+#db h3 em{font:700 12px var(--ff2);color:var(--c-ink2);font-style:normal;white-space:nowrap}
+.its{border-left:2px var(--hair) var(--c-brd);margin-left:5px;padding-left:12px}
+.item{display:flex;gap:8px;align-items:flex-start;padding:2px 0}
+.item .chk{display:flex;gap:10px;align-items:flex-start;flex:1;min-width:0;width:100%;
+  text-align:left;background:none;border:0;padding:4px 0}
+.box{flex:none;width:19px;height:19px;margin-top:2px;border:var(--bw) solid var(--c-brd);
+  border-radius:calc(var(--r) / 1.5);display:grid;place-items:center;font:800 12px var(--ff2);color:transparent}
+.chk[aria-checked=true] .box{background:var(--c-acc);color:var(--c-ink-on)}
+.chk[aria-checked=true] .t{color:var(--c-ink2);text-decoration:line-through}
+.chk .t{flex:1;min-width:0}
+.chk:hover .t{text-decoration:underline}
+.ef{flex:none;font:700 10px var(--ff2);color:var(--c-ink2);background:var(--c-sur2);
+  border:1px solid transparent;border-radius:999px;padding:2px 7px;margin-top:2px;min-width:44px}
+.ef:hover{border-color:var(--c-brd);color:var(--c-ink)}
+.ef[aria-pressed=true]{background:var(--c-acc);color:var(--c-ink-on);border-color:var(--c-brd)}
+.ef.auto{opacity:.5;font-style:italic}
+.hint{color:var(--c-ink2);margin:0 0 8px;font-size:14px}
+#db ul{margin:0;padding-left:20px}
+.notewrap{margin:18px 0 4px}
+.notewrap label{display:block;font:700 11px var(--ff2);text-transform:uppercase;letter-spacing:.05em;
+  color:var(--c-ink2);margin-bottom:5px}
+.noteBox{display:block;width:100%;padding:10px 12px;border:var(--bw) dashed var(--c-brd);
+  border-radius:var(--r);background:var(--c-sur2);color:var(--c-ink);font:13px/1.5 var(--ff2);
+  resize:vertical;min-height:64px}
+.noteBox::placeholder{color:var(--c-ink2)}
+.warn{border:2px solid var(--c-prog);background:var(--c-sur2);border-radius:var(--r);
+  padding:10px 12px;font-size:13px;margin:0 0 14px}
+
+/* --- modal --- */
+.modal{position:fixed;z-index:30;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:min(500px,92vw);max-height:84vh;overflow:auto;background:var(--c-bg);color:var(--c-ink);
+  border:var(--bw) solid var(--c-brd);border-radius:var(--r);box-shadow:var(--sx) var(--sy) var(--sb) var(--sc);
+  visibility:hidden;opacity:0;transition:opacity .15s}
+.modal.open{visibility:visible;opacity:1}
+.modal header{padding:14px 16px;border-bottom:2px solid var(--c-sur2);margin:0;max-width:none;text-align:left}
+.modal h2{font:700 18px var(--ff);margin:0}
+.modal .body{padding:16px}
+.modal .body ol{margin:0 0 16px;padding-left:20px;display:grid;gap:10px}
+.modal .body li{font-size:14px;line-height:1.5}
+.cta{display:block;width:100%;padding:10px;border:var(--bw) solid var(--c-brd);border-radius:var(--r);
+  background:var(--c-acc);color:var(--c-ink-on);font:700 14px var(--ff);margin-top:6px}
+.fld{display:block;margin:0 0 14px}
+.fld span{display:block;font:700 12px var(--ff2);text-transform:var(--scase);color:var(--c-ink2);margin-bottom:5px}
+.fld input,.fld textarea{width:100%;padding:9px 11px;border:var(--bw) solid var(--c-brd);
+  border-radius:var(--r);background:var(--c-sur);color:var(--c-ink);font-size:14px}
+.fld input:focus,.fld textarea:focus{outline:3px solid var(--c-foc);outline-offset:1px}
+.list{max-height:180px;overflow:auto;border:var(--bw) solid var(--c-brd);border-radius:var(--r);margin:0 0 14px}
+.list label{display:flex;gap:9px;align-items:flex-start;padding:8px 11px;font-size:13px;cursor:pointer}
+.list label:hover{background:var(--c-sur2)}
+.list input{accent-color:var(--c-prog);margin-top:2px}
+.x{border:var(--bw) solid var(--c-brd);background:var(--c-sur);color:var(--c-ink);
+  border-radius:var(--r);width:34px;height:34px;font-size:17px;line-height:1;flex:none}
+.empt{padding:20px 10px;text-align:center;color:var(--c-ink2);font-size:14px}
+
+/* --- responsive --- */
+@media (max-width:900px){
+  /* El texto de los botones NO se oculta nunca. Antes `display:none` en
+     `.nav>button span.lbl` dejaba 5 botones en emoji pelado, y como Estilos y
+     Exportar viven dentro de un .pop no los alcanzaba la regla: 5 sin texto y
+     2 con texto, en la misma barra. La nav ya tiene flex-wrap, sola se parte
+     en dos lineas si no entra. */
+  .nav>button,.pop>button{padding:5px 8px;font-size:12px;gap:4px}
+  .nav,.tnwrap{gap:6px}
+  #rmsel{max-width:130px}
+}
+@media (max-width:820px){
+  .row{display:flex;flex-direction:column;align-items:stretch;gap:12px;margin-bottom:44px}
+  .mod{margin-left:30px;width:auto;max-width:360px}
+  .dr{top:auto;height:84%;width:100%;border-left:0;border-top:var(--bw) solid var(--c-brd);
+    border-radius:var(--r) var(--r) 0 0;transform:translateY(100%)}
+  .pop{position:static}
+  .menu,#dlmenu{left:16px;right:16px;top:100%;min-width:0;width:auto}
+  .now{flex-wrap:wrap}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition:none!important;animation:none!important}
+  .mod:hover,.pre button:hover,.nav>button:hover,.pop>button:hover{transform:none}
+}
+
+/* ============================================================
+   CAPA 4 — DELTAS ESTRUCTURALES POR ESTILO
+   Solo lo que los tokens NO pueden expresar.
+   ============================================================ */
+/* brutal: sombras duras, mayusculas, sin radio, "press" real */
+html[data-style="brutal"] .ph b{letter-spacing:-.02em}
+html[data-style="brutal"] .now{box-shadow:6px 6px 0 var(--c-brd)}
+html[data-style="brutal"] .br{stroke-width:3;stroke-dasharray:none}
+html[data-style="brutal"] .br.o{stroke-dasharray:8 6}
+html[data-style="brutal"] .sp{stroke-width:7}
+html[data-style="brutal"] .ph{text-align:left;align-items:flex-start}
+html[data-style="brutal"] .ph small{align-self:flex-start}
+html[data-style="brutal"] .mod,.ph,.now button{box-shadow:5px 5px 0 var(--c-brd)}
+html[data-style="brutal"] .mod:hover{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--c-brd)}
+html[data-style="brutal"] .ph.idle{box-shadow:4px 4px 0 var(--c-brd)}
+html[data-style="brutal"] .mod.off{box-shadow:none;background:repeating-linear-gradient(45deg,transparent 0 6px,var(--c-sur2) 6px 12px)}
+html[data-style="brutal"] .mod.done{color:var(--c-ink-on)}
+html[data-style="brutal"] .ph.idle{color:var(--c-ink)}
+html[data-style="brutal"] h1{text-transform:uppercase;letter-spacing:-.03em;font-size:clamp(30px,7vw,64px)}
+html[data-style="brutal"] header p.lede{text-align:left;border-left:7px solid var(--c-ink);padding-left:13px;
+  color:var(--c-ink);max-width:64ch}
+html[data-style="brutal"] .stats,html[data-style="brutal"] .pre,html[data-style="brutal"] .lg{justify-content:flex-start}
+html[data-style="brutal"] .pre .plab{text-align:left}
+html[data-style="brutal"] .foot{font-size:11px;opacity:.8}
+html[data-style="brutal"] .res button,html[data-style="brutal"] html[data-style="brutal"] .noteBox{box-shadow:4px 4px 0 var(--c-brd)}
+html[data-style="brutal"] .ef{background:var(--c-brd);color:var(--c-sur)}
+html[data-style="brutal"] .ef[aria-pressed=true]{background:var(--c-acc);color:var(--c-ink-on);border-color:var(--c-brd)}
+html[data-style="brutal"] .ph small{background:var(--c-ink-on);color:var(--c-acc);border-radius:0}
+
+/* neo: todo inset, sin bordes */
+html[data-style="neo"] .ph,html[data-style="neo"] .mod,html[data-style="neo"] .now button,
+html[data-style="neo"] .x,html[data-style="neo"] .sw,html[data-style="neo"] .cta,
+html[data-style="neo"] .pre button,html[data-style="neo"] .nav>button,html[data-style="neo"] .pop>button,
+html[data-style="neo"] .res button,html[data-style="neo"] html[data-style="neo"] .pre button:hover,html[data-style="neo"] .nav>button:hover,html[data-style="neo"] .pop>button:hover{
+  box-shadow:inset 3px 3px 6px var(--neo-sh),inset -3px -3px 6px var(--neo-hi)}
+html[data-style="neo"] .pre button[aria-pressed=true],html[data-style="neo"] .nav>button[aria-pressed=true],
+html[data-style="neo"] .menu button[aria-current=true]{
+  background:var(--c-sur2);color:var(--c-ink);box-shadow:inset 3px 3px 6px var(--neo-sh),inset -3px -3px 6px var(--neo-hi)}
+html[data-style="neo"] .menu{box-shadow:8px 8px 18px var(--neo-sh),-8px -8px 18px var(--neo-hi)}
+html[data-style="neo"] .track,html[data-style="neo"] .pb,html[data-style="neo"] .noteBox{
+  box-shadow:inset 3px 3px 6px var(--neo-sh),inset -3px -3px 6px var(--neo-hi)}
+html[data-style="neo"] .fill{background:var(--c-prog);border-radius:999px}
+html[data-style="neo"] .ph.idle,html[data-style="neo"] .mod.off{
+  box-shadow:inset 4px 4px 8px var(--neo-sh),inset -4px -4px 8px var(--neo-hi);color:var(--c-ink2)}
+html[data-style="neo"] .mod.done{box-shadow:inset 4px 4px 8px var(--neo-sh),inset -4px -4px 8px var(--neo-hi)}
+html[data-style="neo"] .mod:hover,html[data-style="neo"] .pre button:hover{transform:none}
+html[data-style="neo"] .br,html[data-style="neo"] .sp{stroke:var(--c-ink2);opacity:.55}
+html[data-style="neo"] .box{box-shadow:2px 2px 5px var(--neo-sh),-2px -2px 5px var(--neo-hi)}
+html[data-style="neo"] .item[aria-checked=true] .box{background:var(--c-prog);color:#fff}
+html[data-style="neo"] .dr{box-shadow:-10px 0 24px var(--neo-sh)}
+html[data-style="neo"] .its{border-left:2px solid var(--c-sur2)}
+
+
+/* glass: blur + translucido */
+html[data-style="glass"] .ph,html[data-style="glass"] .mod,html[data-style="glass"] .topnav,
+html[data-style="glass"] .bar,html[data-style="glass"] .menu,html[data-style="glass"] .dr,
+html[data-style="glass"] .modal,html[data-style="glass"] .now,html[data-style="glass"] .tg,
+html[data-style="glass"] .nav>button,html[data-style="glass"] .pop>button,html[data-style="glass"] .res button{
+  backdrop-filter:blur(14px) saturate(160%);-webkit-backdrop-filter:blur(14px) saturate(160%);
+  background:var(--c-sur);border:1px solid var(--c-brd)}
+html[data-style="glass"] .bar{background:var(--c-acc)}
+html[data-style="glass"] .menu button{background:none;border-bottom:1px solid var(--c-brd)}
+html[data-style="glass"] .pre button:hover,html[data-style="glass"] .nav>button:hover,
+html[data-style="glass"] .pop>button:hover,html[data-style="glass"] .menu button[aria-current=true]{
+  background:var(--c-prog);color:#fff}
+html[data-style="glass"] .pre button[aria-pressed=true],html[data-style="glass"] .nav>button[aria-pressed=true]{
+  background:var(--c-prog);color:#fff;border-color:var(--c-prog)}
+html[data-style="glass"] .track,html[data-style="glass"] .pb{background:var(--c-sur2)}
+html[data-style="glass"] .br,html[data-style="glass"] .sp{stroke:var(--c-ink);opacity:.4}
+html[data-style="glass"] .x,html[data-style="glass"] .sw,html[data-style="glass"] .box{
+  border:1px solid var(--c-brd);background:var(--c-sur2)}
+html[data-style="glass"] .sw[aria-checked=true]{background:var(--c-prog)}
+html[data-style="glass"] .sw[aria-checked=true]::after{background:#fff}
+html[data-style="glass"] .item[aria-checked=true] .box{background:var(--c-prog);border-color:var(--c-prog);color:#fff}
+html[data-style="glass"] .noteBox{background:var(--c-sur2)}
+html[data-style="glass"] .mod.off{box-shadow:none}
+html[data-style="glass"] .list{border-color:var(--c-brd)}
+
+/* mini: filete, nada de sombra */
+html[data-style="mini"] .ph{background:none;border-width:0 0 1px 0;box-shadow:none;padding:8px 0}
+html[data-style="mini"] .ph.idle,html[data-style="mini"] .ph.done{background:none}
+html[data-style="mini"] .ph small{background:none;color:var(--c-ink2);padding:0}
+html[data-style="mini"] .pre button[aria-pressed=true],html[data-style="mini"] .nav>button[aria-pressed=true]{
+  background:var(--c-ink);color:var(--c-sur)}
+html[data-style="mini"] .pre button:hover,html[data-style="mini"] .nav>button:hover,
+html[data-style="mini"] .pop>button:hover{background:var(--c-ink);color:var(--c-sur)}
+html[data-style="mini"] .menu button[aria-current=true]{background:var(--c-sur2);color:var(--c-ink)}
+html[data-style="mini"] .br,html[data-style="mini"] .sp{stroke:var(--c-ink2);stroke-dasharray:none;stroke-width:1}
+html[data-style="mini"] .mod:hover,html[data-style="mini"] .pre button:hover{transform:none;background:var(--c-sur2)}
+html[data-style="mini"] .mod.off{box-shadow:none}
+html[data-style="mini"] .now,html[data-style="mini"] .modal,html[data-style="mini"] .dr,html[data-style="mini"] .dr,
+html[data-style="mini"] .track,html[data-style="mini"] .pb,html[data-style="mini"] .noteBox,
+html[data-style="mini"] .tg,html[data-style="mini"] .res button,html[data-style="mini"] html[data-style="mini"] .item[aria-checked=true] .box{background:var(--c-ink);color:var(--c-sur)}
+html[data-style="mini"] .sw[aria-checked=true]{background:var(--c-ink)}
+html[data-style="mini"] .sw[aria-checked=true]::after{background:var(--c-sur)}
+html[data-style="mini"] .fill{background:var(--c-ink)}
+html[data-style="mini"] .its{border-left:1px solid var(--c-sur2)}
+html[data-style="mini"] h1{font-weight:800;letter-spacing:-.02em}
+html[data-style="mini"] .now{border-width:1px}
+
+
+/* ============================================================
+   CAPA 5 — IMPRESION
+   ============================================================ */
+#printArea{display:none}
+body.printing{background:#fff}
+body.printing #printArea{display:block;max-width:760px;margin:0 auto;padding:24px;color:#111;background:#fff}
+body.printing #printArea h1{font:800 26px/1.2 system-ui,sans-serif;margin:0 0 4px}
+body.printing #printArea .exdate{color:#666;font-size:13px;margin-bottom:18px}
+body.printing #printArea h2{font:700 19px system-ui,sans-serif;margin:22px 0 6px;border-bottom:2px solid #111;padding-bottom:3px}
+body.printing #printArea h3{font:600 15px system-ui,sans-serif;margin:14px 0 4px}
+body.printing #printArea h4{font:600 13px system-ui,sans-serif;margin:10px 0 2px;color:#444}
+body.printing #printArea .idlep{color:#777;font-style:italic;font-size:13px}
+body.printing #printArea ul{margin:0 0 4px;padding-left:22px}
+body.printing #printArea li{font-size:13px;margin:2px 0}
+body.printing #printArea li.done{color:#2f9e64}
+body.printing #printArea blockquote{margin:6px 0 0;padding:6px 10px;border-left:3px solid #999;color:#444;font-size:13px;white-space:pre-wrap}
+@media print{body>*:not(#printArea){display:none!important}body.printing #printArea{display:block!important}}
+</style>
+</head>
+<body>
+<a class="sr" href="#app">Saltar al mapa</a>
+
+<header>
+  <h1>Roadmap de un producto digital</h1>
+  <p class="lede">Seguí el camino central, etapa por etapa. Tocá una rama para ver sus pasos y activala solo si tu producto la necesita. Tu progreso se guarda en este navegador.</p>
+
+  <div class="rowbar">
+    <button id="cfgbtn" class="primary">⚙ <span class="lbl">Configurar roadmap</span></button>
+    <label class="sr" for="rmsel">Roadmap actual</label>
+    <select id="rmsel" title="Tus roadmaps"></select>
+    <button id="newbtn">＋ <span class="lbl">Nuevo</span></button>
+  </div>
+
+  <div class="lg">
+    <span><i class="a"></i>Etapa</span>
+    <span><i></i>Rama activa</span>
+    <span><i class="b"></i>En curso</span>
+    <span><i class="c"></i>Hecha</span>
+    <span><i class="d"></i>Fuera de tu roadmap</span>
+  </div>
+
+  <nav class="topnav" aria-label="Herramientas">
+    <div class="tnwrap">
+      <div class="nav">
+        <button id="helpBtn" aria-label="Cómo usar esta herramienta">❓ <span class="lbl">Ayuda</span></button>
+
+        <div class="pop">
+          <button id="stybtn" aria-haspopup="true" aria-expanded="false">🎨 <span class="lbl">Estilos</span></button>
+          <div class="menu" id="stymenu" role="menu" hidden>
+            <button role="menuitem" data-sty="brutal">Brutalismo</button>
+            <button role="menuitem" data-sty="clean">Clásico</button>
+            <button role="menuitem" data-sty="neo">Neomorfismo</button>
+            <button role="menuitem" data-sty="glass">Glassmorphism</button>
+            <button role="menuitem" data-sty="mini">Minimalista</button>
+          </div>
+        </div>
+
+        <button id="th" title="Cambiar tema">🌙 <span class="lbl">Modo oscuro</span></button>
+        <button id="filterBtn" aria-pressed="false" title="Ocultar lo que ya completaste">👁 <span class="lbl">Ver pendiente</span></button>
+        <button id="reset" title="Borrar progreso">🧹 <span class="lbl">Limpiar</span></button>
+
+        <div class="pop">
+          <button id="dlbtn" aria-haspopup="true" aria-expanded="false">⬇ <span class="lbl">Exportar</span></button>
+          <div class="menu" id="dlmenu" role="menu" hidden>
+            <button data-dl="html">Página autocontenida (.html)</button>
+            <button data-dl="json">Backup crudo (.json)</button>
+            <button data-dl="md">Resumen editable (.md)</button>
+            <button data-dl="pdf">Ver como PDF</button>
+          </div>
+        </div>
+        <button id="loadbtn">📤 <span class="lbl">Importar</span></button>
+        <input type="file" id="loadfile" accept=".md,.markdown,.txt,.json" hidden>
+      </div>
+    </div>
+  </nav>
+
+  <div class="now" id="now" aria-live="polite"></div>
+
+  <div class="bar">
+    <div>
+      <span id="pct">0%</span>
+      <div class="track" role="progressbar" aria-labelledby="pct" aria-valuemin="0" aria-valuemax="100" id="track">
+        <div class="fill" id="fill"></div>
+      </div>
+      <span id="rem"></span>
+      <span class="stats" id="stats"></span>
+    </div>
+  </div>
+</header>
+
+
+<div id="cv"><svg id="ln" aria-hidden="true"></svg><main id="app"></main></div>
+
+<footer class="foot">
+  <span>Espero te ayude en tu proceso — <a href="https://github.com/nazarenods" target="_blank" rel="noopener noreferrer">NazarenoDS</a></span>
+  <span class="ver">v2 — todo se guarda en este navegador</span>
+</footer>
+
+<div class="bk" id="bk"></div>
+<div class="bk" id="helpBk"></div>
+<div class="bk" id="mdBk"></div>
+
+<div class="modal" id="helpModal" role="dialog" aria-modal="true" aria-labelledby="helpTitle" inert>
+  <header><h2 id="helpTitle">Cómo usar este roadmap</h2></header>
+  <div class="body">
+    <ol>
+      <li><b>Configurá tu roadmap</b> con el botón de arriba: elegís el nombre y qué tipo de producto vas a hacer. Después podés prender y apagar ramas a mano, tocándolas en el mapa.</li>
+      <li><b>Usá el buscador</b> para encontrar cualquier paso por texto: te lo lleva directo a su rama.</li>
+      <li><b>Tocá una rama</b> para abrir su panel: ahí tildás los pasos, ajustás la estimación de cada paso y escribís una nota para toda la rama.</li>
+      <li><b>Ten varios roadmaps</b> si querés: creá uno nuevo con ＋ Nuevo y cambiá entre ellos con la lista.</li>
+      <li><b>Guardá el estado como quieras.</b> "Página autocontenida" es un HTML portable con tu progreso adentro; "Backup crudo" es un .json; el .md es para leer y editar a mano.</li>
+    </ol>
+    <button class="cta" id="helpGotIt">Entendido</button>
+  </div>
+</div>
+
+<div class="modal" id="resetModal" role="dialog" aria-modal="true" aria-labelledby="resetTitle" inert>
+  <header><h2 id="resetTitle">¿Qué querés borrar?</h2></header>
+  <div class="body">
+    <p class="hint" style="margin-bottom:14px">Elegí el alcance. Esto no se puede deshacer.</p>
+    <div class="list" id="resetList"></div>
+    <button class="cta" id="resetCancel" style="background:var(--c-sur);color:var(--c-ink)">Cancelar</button>
+  </div>
+</div>
+
+<div class="modal" id="cfgModal" role="dialog" aria-modal="true" aria-labelledby="cfgTitle" inert>
+  <header><h2 id="cfgTitle">Configurar roadmap</h2></header>
+  <div class="body">
+    <label class="fld"><span>Nombre</span><input id="rtitle" type="text" placeholder="Nombre de tu producto o proyecto" autocomplete="off"></label>
+    <p class="hint">Elegí qué tipo de producto vas a hacer. Podés combinar varios: cada tipo enciende las ramas que le sirven.</p>
+    <div class="pre" id="pre"></div>
+    <button class="cta" id="cfgOk">Listo</button>
+  </div>
+</div>
+
+<div class="modal" id="newModal" role="dialog" aria-modal="true" aria-labelledby="newTitle" inert>
+  <header><h2 id="newTitle">Nuevo roadmap</h2></header>
+  <div class="body">
+    <label class="fld"><span>Nombre</span><input id="newName" type="text" placeholder="Mi producto" autocomplete="off"></label>
+    <button class="cta" id="newGo">Crear</button>
+    <button class="cta" id="newCancel" style="background:var(--c-sur);color:var(--c-ink)">Cancelar</button>
+  </div>
+</div>
+
+<aside class="dr" id="dr" role="dialog" aria-modal="true" aria-labelledby="dbTitle" inert>
+  <div class="dh"><span id="dbCrumb"></span><button class="x" id="cl" aria-label="Cerrar">✕</button></div>
+  <div id="db"></div>
+</aside>
+
+<div id="printArea"></div>
+
+<script>
+var P=[["Descubrimiento","Entender el problema y confirmar que hay demanda.",[["prob","Problema y mercado",1,[["Problema","1:Escribir el problema en una frase|2:Identificar a quién le duele más|1:Listar cómo lo resuelven hoy"],["Mercado y competencia","3:Entrevistar usuarios potenciales|2:Analizar competidores directos e indirectos|2:Estimar el tamaño del mercado|2:Buscar señales de demanda"]]],["val","Validación",1,[["Validar antes de construir","3:Armar una landing con lista de espera|1:Medir registros y clics|2:Probar si pagarían por la solución|1:Fijar un criterio para decidir si seguir|1:Elegir: seguir, pivotar o descartar"]]]]],["Definición","Qué hacer, para quién y cómo se sostiene.",[["mvp","Producto y MVP",1,[["Propuesta de valor","1:Escribir la promesa en una oración|2:Definir el usuario principal|2:Definir el diferencial"],["Alcance del MVP","1:Listar todas las funciones posibles|2:Priorizar imprescindible y deseable|2:Recortar al mínimo que resuelve el problema|2:Definir cómo medís el éxito"]]],["biz","Modelo de negocio",1,[["Negocio y números","2:Elegir cómo se cobra|2:Fijar un precio inicial|2:Definir planes o niveles|2:Calcular costos mensuales|2:Estimar el punto de equilibrio"]]],["an","Analítica y medición",1,[["El evento que importa","2:Definir el único evento que demuestra valor|2:Sacar el resto de los eventos del camino"],["Instrumentación","2:Elegir herramienta de analítica|2:Registrar los eventos clave en producción|2:Medir el embudo: visita, registro, activación, pago"],["Privacidad","2:Respetar el consentimiento de cookies|2:No rastrear datos personales sin permiso"]]],["mny","Presupuesto y dinero",1,[["Tu margen de maniobra","2:Definir cuánto tiempo y plata podés invertir antes de cobrar|2:Poner una fecha límite para decidir si seguís"],["Lo que cuesta mantener","2:Anotar el costo mensual de la stack|2:Sumar herramientas de pago y hosting|2:Calcular cuánto necesitás para vivir mientras crecés"],["Margen","2:Calcular el margen por venta o por mes|1:Fijar el precio mínimo que no te da pérdida"]]],["rsk","Riesgos y supuestos",0,[["Supuestos","2:Escribir los 3 supuestos más riesgosos|2:Definir qué te haría abandonar cada uno"],["Mitigación","2:Buscar el escenario contrario de cada supuesto|2:Dejar un plan B escrito por supuesto"]]]]],["Diseño","Solo lo que tu producto necesite.",[["ux","Investigación y UX",0,[["Investigación y flujos","2:Mapear el recorrido del usuario|2:Definir los flujos principales|2:Ordenar la arquitectura de información|2:Entrevistar sobre usabilidad"],["Prototipos","2:Wireframes de baja fidelidad|2:Prototipo navegable|2:Probarlo con 5 personas"]]],["ui","Interfaz y sistema de diseño",0,[["Fundamentos visuales","2:Elegir paleta y tipografías|3:Crear componentes base"],["Pantallas","3:Diseñar las pantallas clave|2:Adaptar a móvil y escritorio"],["Calidad visual","2:Definir estados y variantes|2:Revisar accesibilidad"]]],["brand","Marca",0,[["Identidad de marca","2:Elegir nombre y dominio|3:Diseñar el logo|2:Definir el tono de voz|3:Armar un kit de marca básico|1:Abrir perfiles en redes"]]]]],["Construcción","Cada rama es una pieza técnica distinta.",[["arq","Arquitectura y stack",1,[["Decisiones técnicas","3:Elegir tecnologías|3:Definir la arquitectura general|2:Documentar las decisiones|1:Crear repositorio y estructura|1:Acordar convenciones y flujo de ramas"]]],["fe","Frontend web",0,[["Estructura","2:Layout y navegación|2:Rutas y manejo de estado|2:Componentes reutilizables"],["Funciones","2:Pantallas del MVP|2:Formularios y validaciones|2:Estados de carga y error|2:Rutas protegidas y permisos"],["Rendimiento","2:Optimizar la carga|2:Revisar accesibilidad"]]],["mob","App móvil",0,[["Plataforma","2:Elegir nativa, multiplataforma o PWA|3:Configurar el proyecto y las cuentas de desarrollador"],["Funciones","2:Navegación y pantallas|2:Notificaciones push|2:Modo sin conexión|2:Permisos del dispositivo"],["Publicación","2:Íconos y capturas|2:Ficha de la tienda|2:Revisión y publicación"]]],["be","Backend y API",0,[["Diseño","2:Definir endpoints|2:Documentar la API"],["Implementación","2:Lógica de negocio|2:Autenticación y permisos|2:Manejo de errores|2:Versionado de la API"],["Procesos","2:Tareas en segundo plano|2:Emails transaccionales|2:Límites de uso"]]],["db","Base de datos",0,[["Modelado","2:Definir entidades y relaciones|2:Elegir el tipo de base|2:Normalizar el esquema|3:Preparar migraciones"],["Operación","2:Automatizar backups|2:Probar la restauración"]]],["ext","Integraciones y contenido",0,[["Integraciones","1:Listar servicios externos|3:Implementarlos y probarlos|2:Manejar sus caídas"],["Contenido inicial","2:Cargar datos o catálogo inicial|3:Crear panel de administración"]]]]],["Funciones específicas","Piezas propias de cada tipo de producto.",[["docs","Documentación y SDKs",0,[["Documentación y SDKs","2:Es un bloqueante para APIs públicas, no un extra|2:Guía de inicio rápido|2:Autenticar la primera llamada|2:Ejemplos de código copiables|2:Obtener una API key|1:Ofrecer un entorno de pruebas"]]],["pay","Pagos y facturación",0,[["Cobros y administración","2:Elegir procesador de pagos|2:Checkout o suscripciones|3:Configurar webhooks|1:Emitir facturas y comprobantes|2:Gestionar reembolsos y cobros fallidos"]]],["ai","IA y automatización",0,[["Definición","2:Definir caso de uso y métrica|2:Elegir modelo o proveedor"],["Implementación","2:Reunir los datos necesarios|3:Diseñar prompts o entrenar|2:Evaluar calidad de respuestas"],["Riesgos","2:Controlar costos y límites|2:Filtrar salidas y proteger datos|2:Planificar fallos"]]],["cat","Catálogo y carrito",0,[["Catálogo","2:Estructurar productos y categorías|2:Cargar fotos y descripciones"],["Búsqueda y compra","2:Agregar búsqueda y filtros|3:Armar carrito y checkout|3:Crear cupones y promociones|2:Recuperar carritos abandonados"]]],["res","Reservas y agenda",0,[["Disponibilidad","2:Definir servicios y horarios|2:Mostrar calendario disponible"],["Gestión","2:Evitar reservas duplicadas|1:Enviar confirmaciones y recordatorios|2:Permitir cancelar y reprogramar|2:Sincronizar con calendarios externos"]]],["chat","Mensajería y tiempo real",0,[["Mensajería en tiempo real","2:Conversaciones entre usuarios|2:Estados de lectura y presencia|2:Adjuntos y archivos|2:Elegir websockets o un servicio|1:Guardar historial y respaldos"]]],["notif","Notificaciones",0,[["Notificaciones","2:Elegir email, push o SMS|3:Crear plantillas de mensajes|2:Dejar que el usuario elija preferencias|2:Definir qué eventos avisan|2:Evitar exceso de envíos"]]],["game","Juego y jugabilidad",0,[["Diseño del juego","2:Definir el ciclo central|3:Diseñar progresión y dificultad|3:Armar un prototipo jugable|3:Diseñar la economía interna"],["Producción","2:Elegir motor de juego|2:Producir arte y sonido"]]],["kyc","Identidad y cumplimiento financiero",0,[["Identidad y cumplimiento","2:Verificar identidad (KYC)|2:Prevenir lavado de dinero|2:Detectar fraude|2:Tramitar licencias o autorizaciones|2:Mantener auditoría y trazabilidad"]]]]],["Infraestructura","Poner el producto en línea de forma repetible.",[["env","Entornos y despliegue",1,[["Entornos","2:Separar dev, staging y producción|1:Guardar secretos y variables"],["Automatización","2:Configurar dominio y HTTPS|2:Correr tests en cada cambio|3:Desplegar automáticamente|1:Preparar un plan de rollback"]]],["mon","Monitoreo",1,[["Monitoreo","1:Registrar errores|2:Centralizar logs|2:Medir rendimiento|1:Configurar alertas críticas|1:Publicar página de estado"]]]]],["Calidad y seguridad","Encontrar los problemas antes que tus usuarios.",[["test","Pruebas",1,[["Automáticas","3:Tests unitarios de lo crítico|3:Tests de integración|3:Tests del flujo principal de punta a punta"],["Manuales","2:Probar en dispositivos y navegadores|2:Correr una beta cerrada"],["Carga y rendimiento","3:Hacer pruebas de carga|1:Medir tiempos de respuesta"]]],["sec","Seguridad",1,[["Prevención","2:Validar todas las entradas|1:Revisar dependencias|2:Cifrar datos en tránsito y reposo|2:Auditar permisos"],["Respuesta","3:Buscar vulnerabilidades|1:Definir un plan ante incidentes"]]],["leg","Legal y cumplimiento",1,[["Legal y cumplimiento","3:Términos y condiciones|2:Política de privacidad|1:Consentimiento de cookies|2:Cumplir la protección de datos local|1:Revisar propiedad intelectual"]]],["acc","Accesibilidad",1,[["Accesibilidad","2:Navegación completa por teclado|2:Compatibilidad con lectores de pantalla|1:Contraste de color suficiente|1:Textos alternativos en imágenes|1:Tamaños táctiles adecuados en móvil"]]]]],["Operación del negocio","Lo que pasa fuera del código: entregas, vendedores, comunidad, atención y upkeep.",[["log","Logística y envíos",0,[["Envíos","2:Elegir transportistas|2:Calcular costos de envío|1:Dar seguimiento a los pedidos|2:Definir depósito o proveedor"],["Stock","2:Controlar el inventario|2:Gestionar devoluciones y cambios"]]],["vend","Vendedores y comisiones",0,[["Vendedores y comisiones","2:Registro y verificación de vendedores|2:Panel del vendedor|2:Reglas de publicación|2:Definir el modelo de comisiones|1:Pagar y emitir liquidaciones"]]],["conf","Confianza y reputación",0,[["Reputación","2:Reseñas y calificaciones|2:Verificar perfiles|2:Detectar fraude"],["Conflictos","2:Definir política de disputas|1:Aplicar sanciones"]]],["mod","Moderación y comunidad",0,[["Reglas","2:Redactar normas de la comunidad|3:Crear herramientas de moderación"],["Vida comunitaria","1:Recibir y resolver reportes|1:Conseguir primeros usuarios y embajadores|1:Organizar eventos y contenido|2:Medir la salud de la comunidad"]]],["sop","Atención al cliente",0,[["Atención al cliente","2:Elegir canales de atención|3:Armar centro de ayuda|1:Guardar respuestas frecuentes|2:Definir tiempos de respuesta|2:Medir la satisfacción"]]],["mnt","Mantenimiento y deuda",0,[["Rutina","2:Revisar errores y alertas semanalmente|2:Actualizar dependencias|2:Contestar lo que llega por soporte"],["Deuda","2:Anotar la deuda técnica y priorizarla|2:Sacar funciones que nadie usa|2:Planificar los upgrades grandes"]]]]],["Lanzamiento","Salir de a poco, escuchar y corregir rápido.",[["prep","Preparación",1,[["Producto","3:Corregir problemas críticos|2:Pulir el onboarding|3:Escribir ayuda y documentación|1:Preparar precios y planes"],["Soporte","1:Abrir un canal de atención|1:Planificar el primer día"]]],["dif","Difusión",1,[["Anuncio","1:Avisar a la lista de espera|2:Publicar en comunidades relevantes|1:Lanzar en plataformas como Product Hunt"],["Contenido","3:Preparar post y video de lanzamiento|2:Contactar prensa y aliados"]]]]],["Crecimiento","El producto recién empieza: medir y mejorar.",[["adq","Adquisición",0,[["Canales","2:Elegir un canal principal|1:Trabajar SEO y contenido|1:Activar referidos|2:Buscar alianzas"],["Pago","2:Probar anuncios con poco presupuesto|2:Medir costo por cliente"]]],["ret","Retención y mejora",1,[["Retención y mejora","2:Medir activación y retención|1:Revisar un panel cada semana|2:Entrevistar a quienes se van|1:Armar un roadmap trimestral|1:Decidir: escalar, mantener o cerrar"]]]]]];
+var TYPES=[["E-commerce",["ux","ui","brand","fe","be","db","pay","cat","log","sop","an","mny"]],["Marketplace",["ux","ui","brand","fe","be","db","pay","cat","vend","conf","chat","notif","log","sop","an","mny"]],["SaaS / software",["ux","ui","fe","be","db","pay","ext","notif","sop","an","mny"]],["Herramienta interna / B2B",["ui","fe","be","db","ext","sop","an","mny"]],["App móvil",["ux","ui","mob","be","db","notif","an","mny"]],["Sitio web / landing",["ux","ui","brand","fe","ext","an","mny"]],["Medios y contenido",["ux","ui","brand","fe","ext","notif","an","mny"]],["Cursos y educación online",["ux","ui","brand","fe","be","db","pay","ext","notif","an","mny"]],["Comunidad / red social",["ux","ui","fe","mob","be","db","chat","notif","mod","an","mny"]],["Reservas y servicios",["ux","ui","fe","be","db","pay","res","notif","sop","an","mny"]],["Juego",["ui","game","be","db","pay","notif","an","mny"]],["Fintech",["ux","ui","fe","mob","be","db","pay","kyc","notif","sop","an","mny"]],["Producto con IA",["ux","ui","fe","be","db","ai","an","mny"]],["API / herramienta para devs",["docs","be","fe","pay","ext","an","mny"]]];
+var MINIMA=["prob","val","mvp","mny","arq","fe","be","db","env","test","sec","leg","prep","dif"];
+
+</script>
+<script>
+/* ================================================================
+   v2 — app
+   Arreglos sobre v1:
+   1. export HTML autocontenido con el estado embebido (+ .json lossless)
+   2. el textarea de notas ya no pierde el foco al tabular
+   3. el badge 📝 del mapa se refresca al terminar de escribir
+   4. checks por clave de contenido (slug) + huella de schema. NUNCA por posicion
+   5. "limpiar" con alcance explicito + multi-roadmap con keys namespaced
+   + esfuerzo estimado, tarjeta "que hago hoy", colapsar etapas, filtro y busqueda
+   ================================================================ */
+var SCHEMA_VERSION = 2;
+var IDX_KEY = "rpd.v2:index";
+var D_KEY = function(id){ return "rpd.v2:d:" + id; };
+var DAYS = {1:0.5, 2:1, 3:2};
+var ELAB = {1:"~1h", 2:"~medio dia", 3:"~1-2 dias"};
+
+/* ---------- helpers ---------- */
+var $ = function(s,r){ return (r||document).querySelector(s); };
+var $$ = function(s,r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); };
+function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function slug(t){ return String(t).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+  .replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,64); }
+function uid(){ return Math.random().toString(36).slice(2,9) + Date.now().toString(36).slice(-4); }
+function lsGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+function lsSet(k,v){ try{ localStorage.setItem(k,v); return true; }catch(e){ return false; } }
+function fmtDays(d){
+  if(!(d>0)) return "0 dias";
+  if(d<1) return "unas horas";
+  if(d<1.5) return "~1 dia";
+  return "~" + (Math.round(d*2)/2) + " dias";
+}
+function fmtShort(d){ return d>0 ? (d<1 ? "<1d" : Math.round(d*2)/2 + "d") : ""; }
+function plural(n,s,p){ return n===1 ? s : p; }
+/* ---------- indice de datos ---------- */
+var META = {}, STEPBY = {};
+P.forEach(function(p, pi){
+  p[2].forEach(function(m){
+    var steps = [];
+    m[3].forEach(function(s, si){
+      s[1].split("|").forEach(function(raw, ki){
+        var c = raw.indexOf(":"), e = c<0?2:+raw.slice(0,c), t = c<0?raw:raw.slice(c+1);
+        var key = m[0] + ":" + slug(t);
+        if(STEPBY[key]) key = key + "-" + si + "-" + ki;
+        var st = {key:key, text:t, e:e, sub:s[0], si:si, ki:ki};
+        steps.push(st); STEPBY[key] = {id:m[0], si:si, ki:ki, e:e, text:t};
+      });
+    });
+    META[m[0]] = {id:m[0], name:m[1], ph:p[0], phIdx:pi, on:!!m[2],
+      steps:steps, subs:m[3].map(function(s){ return s[0]; })};
+  });
+});
+var BRANCH_IDS = Object.keys(META);
+function fingerprint(){
+  var s = "";
+  P.forEach(function(p,pi){
+    s += pi + p[0] + ";";
+    p[2].forEach(function(m){
+      s += m[0] + ":";
+      m[3].forEach(function(g){
+        s += g[0] + "/";
+        g[1].split("|").forEach(function(t){ s += t.split(":").slice(1).join(":") + "~"; });
+      });
+    });
+  });
+  var h = 5381;
+  for(var i=0;i<s.length;i++) h = ((h<<5)+h+s.charCodeAt(i))|0;
+  return (h>>>0).toString(36);
+}
+var SCHEMA = fingerprint();
+
+/* ---------- estado ---------- */
+function freshState(){
+  return {v:SCHEMA_VERSION, on:{}, chk:{}, notes:{}, eff:{}, title:"",
+    style:"brutal", theme:null, filter:0, collapsed:{}, help:0};
+}
+function mergeFresh(r){
+  var b = freshState();
+  Object.keys(b).forEach(function(k){ if(r[k]!==undefined) b[k] = r[k]; });
+  ["on","chk","notes","eff","collapsed"].forEach(function(k){
+    if(!b[k] || typeof b[k] !== "object") b[k] = {};
+  });
+  b.v = SCHEMA_VERSION;
+  return b;
+}
+var S = freshState(), RID = null, IDX = [], cur = null;
+
+function readIdx(){
+  try{ var r = JSON.parse(lsGet(IDX_KEY)); return (r && Array.isArray(r)) ? r : []; }catch(e){ return []; }
+}
+function writeIdx(){ lsSet(IDX_KEY, JSON.stringify(IDX)); }
+function save(){ if(RID) lsSet(D_KEY(RID), JSON.stringify(S)); }
+function readState(id){
+  try{ var r = JSON.parse(lsGet(D_KEY(id))); return (r && r.chk) ? mergeFresh(r) : null; }catch(e){ return null; }
+}
+function syncIndexName(){
+  var e = IDX.filter(function(x){ return x.id === RID; })[0];
+  if(e && e.name !== (S.title||"")){ e.name = S.title || e.name; writeIdx(); }
+}
+/* El nombre que se VE va en el indice; S.title es solo el override que escribio
+   el usuario. Sin esto, un roadmap que nunca se renombro aparecia con el campo
+   "Nombre" vacio al abrir Configurar roadmap, aunque en la lista figure con
+   nombre. Devolver "" es correcto: ahi si se quiere borrar el nombre. */
+function currentName(){
+  var e = IDX.filter(function(x){ return x.id === RID; })[0];
+  return (S.title || "").trim() || (e ? (e.name || "").trim() : "") || "";
+}
+function mergeObjects(a,b){
+  var o = {}; Object.keys(a||{}).forEach(function(k){ o[k]=a[k]; });
+  Object.keys(b||{}).forEach(function(k){ o[k]=b[k]; });
+  return o;
+}
+
+/* --- migracion desde v1: los checkseran "id.sub.step" (posicionales) y se
+   resuelven contra el texto real del paso. --- */
+function migrateV1(){
+  var raw = lsGet("roadmap-sh-v1");
+  if(!raw) return null;
+  try{
+    var r = JSON.parse(raw);
+    if(!r || !r.chk) return null;
+    var st = freshState();
+    st.title = r.title || ""; st.style = r.style || "brutal"; st.theme = r.theme || null;
+    st.on = r.on || {}; st.notes = r.notes || {};
+    P.forEach(function(p){ p[2].forEach(function(m){
+      m[3].forEach(function(g,si){
+        g[1].split("|").forEach(function(rawStep,ki){
+          if(!r.chk[m[0]+"."+si+"."+ki]) return;
+          var t = rawStep.split(":").slice(1).join(":");
+          var k = m[0] + ":" + slug(t);
+          if(STEPBY[k]) st.chk[k] = 1;
+        });
+      });
+    }); });
+    return st;
+  }catch(e){ return null; }
+}
+
+function ensureRoadmaps(){
+  IDX = readIdx();
+  for(var i=0;i<IDX.length;i++){
+    var st = readState(IDX[i].id);
+    if(st){ IDX[i].name = st.title || IDX[i].name; RID = IDX[i].id; S = st; writeIdx(); return; }
+  }
+  var mig = migrateV1(), id = uid();
+  S = mig || freshState();
+  RID = id;
+  IDX = [{id:id, name:S.title || "Mi roadmap"}];
+  writeIdx(); save();
+}
+
+/* ---------- consultas ---------- */
+function isOn(id){ return S.on[id] !== undefined ? !!S.on[id] : META[id].on; }
+function effOf(st){ return S.eff[st.key] || st.e; }
+function effOfKey(key){ return S.eff[key] || (STEPBY[key] ? STEPBY[key].e : 2); }
+function branchStats(id){
+  var st = META[id].steps, d=0, tEff=0, rem=0;
+  for(var i=0;i<st.length;i++){
+    var days = DAYS[effOf(st[i])] || 0;
+    tEff += days;
+    if(S.chk[st[i].key]) d++; else rem += days;
+  }
+  return {t:st.length, d:d, rem:rem, pct: st.length ? Math.round(d/st.length*100) : 0};
+}
+function activeIds(){ return BRANCH_IDS.filter(isOn); }
+function roadmapStats(){
+  var ids = activeIds(), t=0, d=0, rem=0;
+  ids.forEach(function(id){ var s=branchStats(id); t+=s.t; d+=s.d; rem+=s.rem; });
+  return {ids:ids, t:t, d:d, rem:rem, pct: t ? Math.round(d/t*100) : 0};
+}
+function phaseStats(pi){
+  var mods = P[pi][2], t=0, d=0, on=0;
+  mods.forEach(function(m){
+    if(!isOn(m[0])) return;
+    on++;
+    var s = branchStats(m[0]); t+=s.t; d+=s.d;
+  });
+  return {t:t, d:d, on:on, total:mods.length, fin: on>0 && d===t};
+}
+function nextStep(){
+  var ids = activeIds();
+  for(var i=0;i<ids.length;i++){
+    var st = META[ids[i]].steps;
+    for(var j=0;j<st.length;j++) if(!S.chk[st[j].key]) return {id:ids[i], st:st[j]};
+  }
+  return null;
+}
+
+/* ---------- render: mapa ---------- */
+function modHTML(m, j){
+  var id = m[0], on = isOn(id), st = branchStats(id);
+  var cls = "mod " + (j%2 ? "r" : "l")
+    + (on ? (st.d === st.t ? " done" : "") : " off")
+    + (cur === id ? " sel" : "");
+  var tuned = META[id].steps.some(function(x){ return S.eff[x.key]; });
+  return '<button class="' + cls + '" style="--p:' + st.pct + '%" data-m="' + id + '"'
+    + ' title="' + esc(META[id].name + " — " + st.d + " de " + st.t + " pasos, " + fmtDays(st.rem) + " restantes") + '">'
+    + '<span class="mt"><span class="dot"></span>' + esc(META[id].name) + '</span>'
+    + '<small>' + (on ? st.d + "/" + st.t : "+ sumar")
+    + (on && st.rem > 0 ? " · " + fmtShort(st.rem) : "")
+    + (tuned ? ' <i class="pin" title="Estimaciones ajustadas a mano">✎</i>' : "")
+    + ((S.notes[id]||"").trim() ? ' <i class="pin" title="tiene notas">📝</i>' : "")
+    + '</small></button>';
+}
+/* parche quirurgico: re-dibuja SOLO el boton de una rama del mapa.
+   Se usa al salir del textarea de notas: el panel no se toca, asi que el
+   textarea y el foco quedan intactos (este era el bug #2 de v1). */
+function patchMapBranch(id){
+  var btn = document.querySelector('#app [data-m="' + aq(id) + '"]');
+  if(!btn) return false;
+  var st = branchStats(id);
+  if(S.filter && (!isOn(id) || st.d === st.t)) return false;   /* que lo filtre el filtro */
+  var found = false;
+  P.forEach(function(p){
+    var j = p[2].map(function(m){ return m[0]; }).indexOf(id);
+    if(j < 0) return;
+    found = true;
+    var tmp = document.createElement("div");
+    tmp.innerHTML = modHTML(p[2][j], j);
+    var fresh = tmp.firstChild;
+    btn.className = fresh.className;
+    btn.setAttribute("style", fresh.getAttribute("style") || "");
+    btn.setAttribute("title", fresh.getAttribute("title") || "");
+    btn.innerHTML = fresh.innerHTML;
+  });
+  return found;
+}
+
+function render(){
+  var rs = roadmapStats(), h = "";
+
+  P.forEach(function(p, pi){
+    var ps = phaseStats(pi), collapsed = !!S.collapsed[pi], mh = "", shown = 0;
+    p[2].forEach(function(m, j){
+      var id = m[0], on = isOn(id), st = branchStats(id);
+      if(S.filter && (!on || st.d === st.t)) return;
+      shown++;
+      if(!collapsed) mh += modHTML(m, j);
+    });
+    if(!shown) return;
+    var n = collapsed ? 1 : Math.ceil(shown/2);
+    var phCls = "ph" + (ps.fin ? " done" : "") + (!ps.on ? " idle" : "");
+    h += '<section class="row" style="--n:' + n + '">'
+      + '<button class="' + phCls + '" data-ph="' + pi + '" aria-expanded="' + (!collapsed) + '"'
+      + ' title="' + (collapsed ? "Expandir etapa" : "Colapsar etapa") + '">'
+      + '<b>' + (ps.fin ? "✓ " : "") + (pi+1) + ". " + esc(p[0]) + '</b>'
+      + '<span>' + esc(p[1]) + '</span>'
+      + '<small>' + (ps.on ? ps.d + " de " + ps.t + " pasos" : "Sin ramas activas") + '</small>'
+      + '<span class="caret">' + (collapsed ? "▸ click para ver" : "▾ click para colapsar") + '</span>'
+      + '</button>' + mh + '</section>';
+  });
+
+  $("#app").innerHTML = h || '<p class="empt">'
+    + (rs.t === 0 ? "No tenés ramas activas. Usá los atajos de arriba para arrancar."
+      : "🎉 No te queda nada pendiente en tu roadmap activo.") + '</p>';
+
+  $("#pct").textContent = rs.pct + "%";
+  $("#fill").style.width = rs.pct + "%";
+  $("#track").setAttribute("aria-valuenow", rs.pct);
+  $("#track").setAttribute("aria-valuetext", rs.d + " de " + rs.t + " pasos, " + fmtDays(rs.rem) + " restantes");
+  $("#rem").textContent = rs.rem > 0 ? fmtDays(rs.rem) + " de trabajo" : "sin trabajo pendiente";
+
+  var fins = P.filter(function(p,i){ return phaseStats(i).fin; }).length;
+  $("#stats").innerHTML =
+    '<span><b>' + rs.ids.length + '</b> ' + plural(rs.ids.length, "rama activa", "ramas activas") + '</span>'
+    + '<span><b>' + rs.d + "/" + rs.t + '</b> ' + plural(rs.t, "paso", "pasos") + '</span>'
+    + '<span><b>' + fmtShort(rs.rem) + '</b> de esfuerzo restante</span>'
+    + '<span><b>' + fins + "/" + P.length + '</b> ' + plural(P.length, "etapa", "etapas") + ' completas</span>';
+
+  var nx = nextStep(), now = $("#now");
+  if(nx){
+    now.className = "now";
+    now.innerHTML = '<div class="nl"><b>Siguiente paso</b>'
+      + '<div class="nt">' + esc(nx.st.text) + '</div>'
+      + '<div class="ns">' + esc(META[nx.id].ph) + " › " + esc(META[nx.id].name) + " › " + esc(nx.st.sub) + '</div></div>'
+      + '<span class="ne">' + ELAB[effOf(nx.st)] + '</span>'
+      + '<button data-open="' + nx.id + '">Abrir rama</button>';
+  } else {
+    now.className = "now done";
+    now.innerHTML = '<div class="nl"><b>Siguiente paso</b><div class="empty">'
+      + (rs.t === 0 ? "No hay ramas activas. Elegí un tipo de producto arriba."
+                    : "🎉 Roadmap completo. Decidí: escalar, mantener o cerrar.")
+      + '</div></div>';
+  }
+
+  paintPresets(); paintRoadmapSelect(); paintFilter();
+  scheduleLinks();
+}
+
+/* ---------- render: panel de rama ---------- */
+function renderDrawer(){
+  var dr = $("#dr"), db = $("#db"), bk = $("#bk"), open = !!cur;
+  dr.classList.toggle("open", open);
+  bk.classList.toggle("show", open);
+  dr.inert = !open;
+  if(!open) return;
+
+  var m = META[cur], on = isOn(cur), st = branchStats(cur);
+  $("#dbCrumb").textContent = m.ph;
+  var h = '<h2 id="dbTitle">' + esc(m.name) + '</h2>'
+    + '<div class="tg"><button class="sw" role="switch" aria-checked="' + on + '"'
+    + ' data-k="s:' + cur + '" aria-label="Incluir esta rama en tu roadmap"></button>'
+    + '<span>' + (on ? "Incluida en tu roadmap" : "Fuera de tu roadmap") + '</span></div>';
+
+  if(on){
+    h += '<div class="pb"><i style="width:' + st.pct + '%"></i></div>'
+      + '<div class="pbs"><span>' + st.d + " de " + st.t + " pasos</span><span>"
+      + fmtDays(st.rem) + " restantes</span></div>";
+
+    var filt = !!S.filter, any = false;
+    m.subs.forEach(function(subname, si){
+      var items = m.steps.filter(function(s){ return s.si === si; });
+      if(!items.length) return;
+      var li = "", sd = 0, vis = 0;
+      items.forEach(function(s){
+        var x = !!S.chk[s.key], e = effOf(s);
+        if(x) sd++;
+        if(filt && x) return;
+        vis++;
+        var ov = S.eff[s.key];
+        var nxt = ov === 1 ? 2 : ov === 2 ? 3 : ov === 3 ? null : (e === 1 ? 2 : 1);
+        var tip = "Estimación: " + ELAB[e] + (ov ? " (la pusiste vos)" : " (según el dataset)")
+          + ". Click para poner " + (nxt ? ELAB[nxt] : "la del dataset") + ".";
+        li += '<div class="item">'
+          + '<button class="chk" role="checkbox" aria-checked="' + x + '" data-k="c:' + s.key + '">'
+          + '<span class="box">✓</span><span class="t">' + esc(s.text) + '</span></button>'
+          + '<button class="ef' + (ov ? "" : " auto") + '" data-eff="' + s.key + '"'
+          + ' aria-pressed="' + !!ov + '" title="' + esc(tip) + '">' + e + '</button></div>';
+      });
+      if(!vis) return;
+      any = true;
+      h += "<h3>" + esc(subname) + "<em>" + sd + "/" + items.length + "</em></h3>"
+         + '<div class="its">' + li + "</div>";
+    });
+    if(!any) h += '<p class="empt">🎉 Completaste todos los pasos de esta rama.</p>';
+    h += '<div class="notewrap"><label for="noteBox">Notas de esta rama</label>'
+      + '<textarea class="noteBox" id="noteBox" data-noteinput="' + cur + '" placeholder="Anotá lo que quieras: decisiones, enlaces, fechas…">'
+      + esc(S.notes[cur] || "") + '</textarea></div>';
+  } else {
+    h += '<p class="hint">Sumala si tu producto la necesita. Estas son sus mini etapas:</p><ul>'
+      + m.subs.map(function(s){ return "<li>" + esc(s) + "</li>"; }).join("") + '</ul>'
+      + '<p class="hint">Son ' + st.t + " pasos: " + fmtDays(st.rem) + " de trabajo.</p>";
+  }
+
+  /* preservo scroll, foco y posicion del cursor entre re-renders */
+  var ae = document.activeElement, sc = db.scrollTop;
+  var key = (ae && ae.dataset) ? (ae.dataset.k || ae.dataset.eff || ae.dataset.noteinput || null) : null;
+  var caret = (ae && "selectionStart" in ae) ? ae.selectionStart : null;
+  db.innerHTML = h;
+  db.scrollTop = sc;
+  restoreFocus(key, caret, db);
+}
+function restoreFocus(key, caret, scope){
+  if(!key) return;
+  var sel = '[data-k="'+aq(key)+'"], [data-eff="'+aq(key)+'"], [data-noteinput="'+aq(key)+'"]';
+  var f = (scope || document).querySelector(sel);
+  if(!f) return;
+  f.focus({preventScroll:true});
+  if(caret != null && f.setSelectionRange){ try{ f.setSelectionRange(caret, caret); }catch(e){} }
+}
+
+/* ---------- render: conectores ---------- */
+var rafId = null;
+function scheduleLinks(){ if(rafId) return; rafId = requestAnimationFrame(function(){ rafId = null; drawLinks(); }); }
+function drawLinks(){
+  rafId = null;
+  var cv = $("#cv"), brutal = document.documentElement.dataset.style === "brutal",
+      mob = window.innerWidth <= 820, d = "", spine = "", prev = null;
+  var base = cv.getBoundingClientRect();
+  function box(el){
+    var r = el.getBoundingClientRect();
+    return {l:r.left-base.left, r:r.right-base.left, t:r.top-base.top, b:r.bottom-base.top,
+            x:(r.left+r.right)/2-base.left, y:(r.top+r.bottom)/2-base.top};
+  }
+  $$("#app .row").forEach(function(row){
+    var n = box(row.querySelector(".ph"));
+    $$(".mod", row).forEach(function(el){
+      var r = box(el), s;
+      if(mob){
+        s = brutal ? "M"+(n.l+14)+" "+n.b+"V"+r.y+"H"+r.l
+          : "M"+(n.l+14)+" "+n.b+"V"+(r.y-12)+"Q"+(n.l+14)+" "+r.y+" "+(n.l+26)+" "+r.y+"H"+r.l;
+      } else {
+        var lf = r.x < n.x, sx = lf?n.l:n.r, ex = lf?r.r:r.l, mx = (sx+ex)/2;
+        s = brutal ? "M"+sx+" "+n.y+"H"+mx+"V"+r.y+"H"+ex
+          : "M"+sx+" "+n.y+"C"+mx+" "+n.y+" "+mx+" "+r.y+" "+ex+" "+r.y;
+      }
+      d += '<path d="' + s + '" class="br' + (el.classList.contains("off") ? " o" : "") + '"/>';
+    });
+    if(prev) spine += '<path d="M' + (mob?prev.l+14:prev.x) + " " + prev.b
+      + "L" + (mob?n.l+14:n.x) + " " + n.t + '" class="sp"/>';
+    prev = n;
+  });
+  var svg = $("#ln");
+  svg.setAttribute("width", cv.offsetWidth);
+  svg.setAttribute("height", cv.offsetHeight);
+  svg.innerHTML = d + spine;
+}
+
+/* ---------- render: controles ---------- */
+/* una rama repetida en la lista de un tipo no cuenta dos veces */
+function typeIds(i){
+  var seen = {}, out = [];
+  TYPES[i][1].forEach(function(x){ if(META[x] && !seen[x]){ seen[x] = 1; out.push(x); } });
+  return out;
+}
+function paintPresets(){
+  $("#pre").innerHTML = '<span class="plab">Activá los tipos que se parezcan al tuyo (podés combinar varios):</span>'
+    + TYPES.map(function(t,i){
+        var ids = typeIds(i), on = ids.every(isOn);
+        return '<button data-p="' + i + '" aria-pressed="' + on + '" title="Enciende o apaga '
+             + ids.length + (ids.length === 1 ? " rama" : " ramas") + '">'
+             + esc(t[0]) + (on ? "" : " · " + ids.length) + '</button>'; }).join("")
+    + '<button class="ghost" data-bulk="defaults" title="Vuelve al conjunto de ramas esenciales">↺ Solo lo esencial</button>'
+    + '<button class="ghost" data-bulk="minimal" title="Solo lo necesario para llegar a lanzar">⚡ Ruta mínima</button>'
+    + '<button class="ghost" data-bulk="empty" title="Apaga todas las ramas">∅ Empezar de cero</button>';
+}
+var lastSelHTML = "";
+function paintRoadmapSelect(){
+  var sel = $("#rmsel");
+  var html = IDX.map(function(x){
+    return '<option value="' + esc(x.id) + '"' + (x.id === RID ? " selected" : "") + '>'
+         + esc(x.name || "Sin nombre") + '</option>';
+  }).join("");
+  if(html === lastSelHTML) return;
+  lastSelHTML = html;
+  sel.innerHTML = html;
+}
+function paintFilter(){
+  var b = $("#filterBtn");
+  b.setAttribute("aria-pressed", !!S.filter);
+  b.innerHTML = (S.filter ? "🙈 " : "👁 ") + '<span class="lbl">'
+    + (S.filter ? "Ver todo" : "Ver pendiente") + '</span>';
+}
+
+/* ---------- update ---------- */
+function update(){
+  var ae = document.activeElement;
+  var key = (ae && ae.dataset) ? (ae.dataset.k || ae.dataset.eff || ae.dataset.noteinput || null) : null;
+  var caret = (ae && "selectionStart" in ae) ? ae.selectionStart : null;
+  render();
+  renderDrawer();
+  save(); syncIndexName();
+  restoreFocus(key, caret);
+}
+function openBranch(id){
+  cur = id;
+  update();
+  $("#cl").focus({preventScroll:true});
+}
+function closeBranch(){
+  var back = cur; cur = null;
+  update();
+  if(back){
+    var m = document.querySelector('#app [data-m="' + aq(back) + '"]');
+    if(m) m.focus({preventScroll:true});
+  }
+}
+
+/* ---------- tema / estilos ---------- */
+var STY = {brutal:"Brutalismo", clean:"Clásico", neo:"Neomorfismo", glass:"Glassmorphism", mini:"Minimalista"};
+function sysDark(){ return !!(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches); }
+/* "auto" no es un valor de tema: hay que resolverlo contra el sistema,
+   porque data-theme="auto" no lo matchea ningun selector de CSS */
+function resolvedTheme(){
+  return (S.theme === "dark" || S.theme === "light") ? S.theme : (sysDark() ? "dark" : "light");
+}
+function applyChrome(){
+  var s = S.style || "brutal", r = document.documentElement;
+  r.dataset.style = s;
+  $("#stybtn").innerHTML = "🎨 <span class='lbl'>" + STY[s] + "</span>";
+  $$("#stymenu button").forEach(function(b){ b.setAttribute("aria-current", b.dataset.sty === s); });
+  var th = resolvedTheme();
+  r.dataset.theme = th;
+  $("#th").innerHTML = (th === "dark" ? "☀️ " : "🌙 ") + '<span class="lbl">'
+    + (th === "dark" ? "Modo claro" : "Modo oscuro") + '</span>';
+  if(document.activeElement !== $("#rtitle")) $("#rtitle").value = currentName();
+  scheduleLinks();
+}
+
+if(window.matchMedia){
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function(){
+    if(S.theme !== "dark" && S.theme !== "light"){ applyChrome(); save(); }
+  });
+}
+
+/* ---------- capas / foco ---------- */
+var layerStack = [];
+/* valor de atributo entre comillas: escapa solo lo que rompe la cadena */
+function aq(v){
+  return String(v).replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+}
+function pushLayer(el, bk, opener){
+  var a = document.activeElement;
+  layerStack.push({el:el, bk:bk, prev:(opener || (a && a !== document.body ? a : null))});
+  el.classList.add("open"); el.inert = false; bk.classList.add("show");
+  var f = el.querySelector(".cta, input:not([type=hidden]), textarea, button:not(.x)");
+  if(f) f.focus();
+}
+function popLayer(){
+  var L = layerStack.pop();
+  if(!L) return;
+  L.el.classList.remove("open"); L.el.inert = true; L.bk.classList.remove("show");
+  if(L.prev && L.prev.focus) L.prev.focus({preventScroll:true});
+}
+var FOC = 'a[href],button:not([disabled]),input:not([disabled]):not([type=hidden]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+document.addEventListener("keydown", function(e){
+  if(e.key === "Escape"){
+    if(layerStack.length){ popLayer(); return; }
+    if(MENUS.some(function(o){ return !o.menu.hidden; })){ closeMenus(); return; }
+    if(cur){ closeBranch(); return; }
+  }
+  if(e.key === "Tab" && layerStack.length){
+    var box2 = layerStack[layerStack.length-1].el;
+    var f = $$(FOC, box2).filter(function(x){ return x.getClientRects().length; });
+    if(!f.length) return;
+    var first = f[0], last = f[f.length-1];
+    if(!box2.contains(document.activeElement)){ e.preventDefault(); first.focus(); }
+    else if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+  }
+});
+
+/* ---------- export ---------- */
+function fileDownload(name, text, mime){
+  var blob = new Blob([text], {type:mime}), url = URL.createObjectURL(blob), a = document.createElement("a");
+  a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 2000);
+}
+function exportHTML(){
+  var c = document.documentElement.cloneNode(true);
+  /* solo los contenedores que la app repinta. los modales NO: su markup
+     estatico lo necesita la app al arrancar (si no, paintPresets explota) */
+  ["#app","#pre","#db","#ln","#printArea","#now","#stats"].forEach(function(sel){
+    var n = c.querySelector(sel); if(n) n.innerHTML = "";
+  });
+  $$(".open,.show,.sel,.printing", c).forEach(function(n){
+    n.classList.remove("open"); n.classList.remove("show");
+    n.classList.remove("sel"); n.classList.remove("printing");
+  });
+  $$("[aria-pressed=true]", c).forEach(function(n){ n.setAttribute("aria-pressed","false"); });
+  $("#rtitle") && c.querySelector("#rtitle") && c.querySelector("#rtitle").removeAttribute("value");
+  c.querySelector("#fill") && c.querySelector("#fill").removeAttribute("style");
+  var seed = document.createElement("script");
+  seed.setAttribute("type","application/json");
+  seed.setAttribute("id","rpd-seed");
+  seed.textContent = JSON.stringify({v:SCHEMA_VERSION, schema:SCHEMA, state:S, index:IDX, rid:RID});
+  c.querySelector("body").insertBefore(seed, c.querySelector("body").firstChild);
+  fileDownload("roadmap-" + (slug(currentName()) || "producto") + ".html",
+    "<!DOCTYPE html>\n" + c.outerHTML, "text/html");
+}
+function exportJSON(){
+  fileDownload("roadmap-" + (slug(currentName()) || "producto") + ".json",
+    JSON.stringify({tool:"roadmap-producto-digital", v:SCHEMA_VERSION, schema:SCHEMA,
+      name:S.title || "", state:S, index:IDX, rid:RID}, null, 2), "application/json");
+}
+function buildMarkdown(){
+  var L = ["---","tool: roadmap-producto-digital","v: " + SCHEMA_VERSION,"schema: " + SCHEMA,"---","",
+    "# " + (currentName() || "Roadmap de producto digital"), "",
+    "_Exportado: " + new Date().toLocaleString() + "_", ""];
+  P.forEach(function(p,i){
+    var acts = p[2].filter(function(m){ return isOn(m[0]); });
+    L.push("## " + (i+1) + ". " + p[0]); L.push("");
+    if(!acts.length){ L.push("_Sin ramas activas._",""); return; }
+    acts.forEach(function(m){
+      var meta = META[m[0]], st = branchStats(m[0]);
+      L.push("### [" + m[0] + "] " + meta.name + " (" + st.d + "/" + st.t + " · " + fmtDays(st.rem) + ")");
+      L.push("");
+      meta.subs.forEach(function(sub, si){
+        var items = meta.steps.filter(function(s){ return s.si === si; });
+        if(!items.length) return;
+        L.push("**" + sub + "**","");
+        items.forEach(function(s){
+          L.push("- [" + (S.chk[s.key] ? "x" : " ") + "] " + effOf(s) + " · " + s.text);
+        });
+        L.push("");
+      });
+      if((S.notes[m[0]]||"").trim()) L.push("**Notas:** " + S.notes[m[0]].trim().replace(/\n/g,"  \n"), "");
+      L.push("");
+    });
+  });
+  return L.join("\n");
+}
+function buildSummaryHTML(){
+  var rs = roadmapStats();
+  var h = "<h1>" + esc(currentName() || "Roadmap de producto digital") + "</h1>"
+    + '<div class="exdate">Exportado: ' + new Date().toLocaleString() + " · "
+    + rs.d + " de " + rs.t + " pasos · " + fmtDays(rs.rem) + " restantes</div>";
+  P.forEach(function(p,i){
+    var acts = p[2].filter(function(m){ return isOn(m[0]); });
+    h += "<h2>" + (i+1) + ". " + esc(p[0]) + "</h2>";
+    if(!acts.length){ h += '<p class="idlep">Sin ramas activas.</p>'; return; }
+    acts.forEach(function(m){
+      var meta = META[m[0]], st = branchStats(m[0]);
+      h += "<h3>[" + m[0] + "] " + esc(meta.name) + " (" + st.d + "/" + st.t + ")</h3>";
+      meta.subs.forEach(function(sub, si){
+        var items = meta.steps.filter(function(s){ return s.si === si; });
+        if(!items.length) return;
+        h += "<h4>" + esc(sub) + "</h4><ul>";
+        items.forEach(function(s){
+          var x = !!S.chk[s.key];
+          h += '<li class="' + (x ? "done" : "") + '">' + (x ? "✓ " : "☐ ") + esc(s.text)
+             + " — <em>" + ELAB[effOf(s)].replace("~","") + "</em></li>";
+        });
+        h += "</ul>";
+      });
+      if((S.notes[m[0]]||"").trim()) h += "<blockquote>" + esc(S.notes[m[0]].trim()) + "</blockquote>";
+    });
+  });
+  return h;
+}
+function printPDF(){
+  $("#printArea").innerHTML = buildSummaryHTML();
+  document.body.classList.add("printing");
+  var off = function(){ document.body.classList.remove("printing"); window.removeEventListener("afterprint", off); };
+  window.addEventListener("afterprint", off);
+  setTimeout(function(){ window.print(); }, 60);
+}
+
+/* ---------- import ----------
+   REGLA: los checks NUNCA se resuelven por posicion. Se resuelven por clave de
+   contenido (slug del texto). Si editaste un paso, su check se pierde y se cuenta
+   como descartado: falla de forma segura en vez de tildar el paso equivocado. */
+function parseMarkdown(text){
+  var out = {title:"", schema:null, chk:{}, eff:{}, notes:{}, dropped:0, unknown:[]};
+  var fm = text.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if(fm){
+    fm[1].split(/\r?\n/).forEach(function(l){
+      var m = l.match(/^schema:\s*(\S+)/);
+      if(m) out.schema = m[1];
+    });
+    text = text.slice(fm[0].length);
+  }
+  var t = text.match(/^#\s+(.+?)\s*$/m);
+  if(t) out.title = t[1].trim();
+
+  var curM = null, notes = null, collecting = false;
+  function flush(){ if(curM && notes && notes.length) out.notes[curM] = notes.join("\n").replace(/\s+$/,""); }
+  text.split(/\r?\n/).forEach(function(line){
+    var h3 = line.match(/^###\s+\[([A-Za-z0-9_-]+)\]/);
+    if(h3){
+      flush();
+      curM = META[h3[1]] ? h3[1] : null;
+      if(!curM) out.unknown.push(h3[1]);
+      notes = []; collecting = false;
+      return;
+    }
+    if(/^#{1,2}\s+/.test(line)){ flush(); curM = null; notes = null; collecting = false; return; }
+    if(!curM) return;
+    var cb = line.match(/^-\s\[( |x|X)\]\s+(.+?)\s*$/);
+    if(cb){
+      var rest = cb[2], e = null, m2 = rest.match(/^(\d)\s·\s(.+)$/);
+      if(m2){ e = +m2[1]; rest = m2[2]; }
+      var key = curM + ":" + slug(rest);
+      var meta = STEPBY[key];
+      if(!meta || meta.id !== curM){ out.dropped++; return; }
+      if(/x/i.test(cb[1])) out.chk[key] = 1;
+      if(e && e !== meta.e) out.eff[key] = e;
+      return;
+    }
+    var ns = line.match(/^\*\*Notas:\*\*\s?(.*)$/);
+    if(ns){ collecting = true; notes = [ns[1]]; return; }
+    if(collecting && line.trim() !== "") notes.push(line.replace(/\s{2}$/,""));
+  });
+  flush();
+  return out;
+}
+function importMarkdown(text){
+  var p = parseMarkdown(text), nChk = Object.keys(p.chk).length;
+  if(!p.schema && !nChk){
+    alert("Este archivo no parece un backup de este roadmap: no tiene el bloque --- ... --- ni pasos reconocibles.");
+    return false;
+  }
+  var msg = "Esto va a reemplazar tu progreso actual por el del archivo.\n\n"
+          + "Se encontraron " + nChk + " pasos tildados.";
+  if(p.schema && p.schema !== SCHEMA){
+    msg += "\n\n⚠ El contenido del roadmap cambió desde que se generó el backup (huella "
+         + p.schema + " vs " + SCHEMA + ").\nPor seguridad solo se importan los pasos que coinciden "
+         + "exactamente por nombre. Los demás se ignoran en vez de correrse de lugar.";
+  } else if(!p.schema){
+    msg += "\n\n⚠ El archivo no tiene huella de versión: los pasos se buscan solo por texto exacto.";
+  }
+  if(p.dropped) msg += "\n\n" + p.dropped + " paso(s) no coincidieron y quedaron sin tildar.";
+  if(p.unknown.length) msg += "\n\nRamas desconocidas en el archivo: " + p.unknown.join(", ");
+  if(!confirm(msg)) return false;
+
+  S.chk = p.chk;
+  S.notes = mergeObjects(S.notes, p.notes);
+  S.eff = mergeObjects(S.eff, p.eff);
+  if(p.title) S.title = p.title;
+  var branches = {};
+  Object.keys(p.chk).forEach(function(k){ branches[k.split(":")[0]] = 1; });
+  Object.keys(p.eff).forEach(function(k){ branches[k.split(":")[0]] = 1; });
+  Object.keys(p.notes).forEach(function(id){ branches[id] = 1; });
+  Object.keys(branches).forEach(function(id){ if(META[id]) S.on[id] = 1; });
+  return true;
+}
+function importJSON(text){
+  var r = JSON.parse(text);
+  if(!r || r.tool !== "roadmap-producto-digital") throw new Error("no es un backup de esta herramienta");
+  if(!confirm("Esto va a reemplazar tu roadmap actual por el del archivo. ¿Continuar?")) return false;
+  S = mergeFresh(r.state || {});
+  if(r.name && !S.title) S.title = r.name;
+  if(Array.isArray(r.index) && r.index.length){
+    IDX = r.index;
+    if(!IDX.filter(function(x){ return x.id === RID; }).length) IDX.push({id:RID, name:S.title || "Mi roadmap"});
+    writeIdx();
+  }
+  return true;
+}
+function handleFile(f){
+  var fr = new FileReader();
+  fr.onload = function(){
+    var text = String(fr.result);
+    try{
+      var ok = /^\s*[{[]/.test(text) ? importJSON(text) : importMarkdown(text);
+      if(ok){ applyChrome(); update(); }
+    }catch(err){ alert("No se pudo leer el archivo: " + err.message); }
+  };
+  fr.readAsText(f);
+}
+
+/* ---------- eventos ---------- */
+document.addEventListener("click", function(e){
+  var t = e.target;
+  if(t.id === "bk" || t.id === "cl"){ closeBranch(); return; }
+
+  var b = t.closest("[data-m],[data-k],[data-eff],[data-p],[data-bulk],[data-ph],[data-open],[data-dl],[data-sty],[data-rz]");
+  if(!b) return;
+
+  /* --- abrir rama --- */
+  if(b.dataset.m){ openBranch(b.dataset.m); return; }
+  if(b.dataset.open !== undefined){ openBranch(b.dataset.open); return; }
+
+  /* --- toggle de rama --- */
+  if(b.dataset.k && b.dataset.k.charAt(0) === "s"){
+    var sid = b.dataset.k.slice(2);
+    S.on[sid] = isOn(sid) ? 0 : 1;
+    update(); return;
+  }
+  /* --- check de paso --- */
+  if(b.dataset.k && b.dataset.k.charAt(0) === "c"){
+    var ck = b.dataset.k.slice(2);
+    if(S.chk[ck]) delete S.chk[ck]; else S.chk[ck] = 1;
+    update(); return;
+  }
+  /* --- esfuerzo: automatico -> 1 -> 2 -> 3 -> automatico ---
+     Antes el ciclo arrancaba en la base del dataset, asi que un paso con base 3
+     NO respondia al primer click (borraba una clave que no existia) y uno con
+     base 1 se quedaba en "~1h" sin cambio visible. Ahora el primer click desde
+     automatico siempre cae en un valor DISTINTO del que ya se ve. */
+  if(b.dataset.eff){
+    var ek = b.dataset.eff, ov = S.eff[ek];
+    if(ov === 1) S.eff[ek] = 2;
+    else if(ov === 2) S.eff[ek] = 3;
+    else if(ov === 3) delete S.eff[ek];                       /* 3 -> vuelve a la del dataset */
+    else S.eff[ek] = effOfKey(ek) === 1 ? 2 : 1;              /* automatico -> siempre se nota */
+    update(); return;
+  }
+  /* --- preset de tipo de producto --- */
+  if(b.dataset.p !== undefined){
+    var ids = typeIds(+b.dataset.p);
+    var allOn = ids.length > 0 && ids.every(isOn);
+    ids.forEach(function(id){ S.on[id] = allOn ? 0 : 1; });
+    update(); return;
+  }
+  /* --- atajos: esencial / ruta minima / vacio --- */
+  if(b.dataset.bulk){
+    var kind = b.dataset.bulk;
+    if(kind === "defaults"){
+      S.on = {};                                   /* vuelve a los defaults del dataset */
+    } else {
+      S.on = {};                                   /* isOn() cae al default si la clave no existe... */
+      BRANCH_IDS.forEach(function(id){ S.on[id] = 0; });   /* ...asi que las apago todas explisitamente */
+      (kind === "minimal" ? MINIMA : []).forEach(function(id){ if(META[id]) S.on[id] = 1; });
+    }
+    S.collapsed = {};
+    update(); return;
+  }
+  /* --- colapsar etapa --- */
+  if(b.dataset.ph !== undefined){
+    var pi = +b.dataset.ph;
+    if(S.collapsed[pi]) delete S.collapsed[pi]; else S.collapsed[pi] = 1;
+    update(); return;
+  }
+  /* --- estilos --- */
+  if(b.dataset.sty){ S.style = b.dataset.sty; applyChrome(); update(); return; }
+  /* --- exportar --- */
+  if(b.dataset.dl){
+    closeMenus();
+    if(b.dataset.dl === "html") exportHTML();
+    else if(b.dataset.dl === "json") exportJSON();
+    else if(b.dataset.dl === "md") exportMarkdown();
+    else printPDF();
+    return;
+  }
+  /* --- alcance de borrado --- */
+  if(b.dataset.rz){
+    var rz = b.dataset.rz;
+    if(rz === "roadmap"){
+      if(IDX.length <= 1){ alert("No podés borrar el único roadmap. Creá otro primero."); return; }
+      if(!confirm('Borrar "' + (currentName() || "Sin nombre") + '" y todos sus datos del navegador.\n\nNo se puede deshacer.')) return;
+      try{ localStorage.removeItem(D_KEY(RID)); }catch(err){}
+      IDX = IDX.filter(function(x){ return x.id !== RID; });
+      writeIdx();
+      popLayer();
+      ensureRoadmaps(); applyChrome(); update();
+      return;
+    }
+    var boxes = $$("#resetList input:checked");
+    if(!boxes.length){ alert("Elegí al menos una cosa para borrar."); return; }
+    if(!confirm("Borrar:\n- " + boxes.map(function(x){ return x.parentNode.textContent.trim(); }).join("\n- ")
+                + "\n\nNo se puede deshacer.")) return;
+    boxes.forEach(function(x){
+      var v = x.value;
+      if(v === "chk") S.chk = {};
+      else if(v === "eff") S.eff = {};
+      else if(v === "notes") S.notes = {};
+      else if(v === "on"){ S.on = {}; S.collapsed = {}; }
+      else if(v === "title"){ S.title = ""; syncIndexName(); }
+    });
+    popLayer(); applyChrome(); update();
+    return;
+  }
+});
+
+/* --- notas: se guardan en vivo. FIX v1: NO re-renderizo el drawer al salir,
+       porque eso destruia el textarea y el foco. Solo refresco el mapa, que
+       era lo unico que quedaba desactualizado (el badge 📝). --- */
+document.addEventListener("input", function(e){
+  if(e.target.matches && e.target.matches("[data-noteinput]")){
+    S.notes[e.target.dataset.noteinput] = e.target.value;
+    save();
+  }
+});
+document.addEventListener("focusout", function(e){
+  if(!(e.target.matches && e.target.matches("[data-noteinput]"))) return;
+  var id = e.target.dataset.noteinput;
+  var m = document.querySelector('#app [data-m="' + aq(id) + '"]');
+  if(!m) return;
+  var had = !!m.querySelector('i[title="tiene notas"]'), has = !!(S.notes[id] || "").trim();
+  if(had !== has){ patchMapBranch(id); save(); } else save();
+});
+
+/* ---------- menus ---------- */
+var stybtn = $("#stybtn"), stymenu = $("#stymenu"), dlbtn = $("#dlbtn"), dlmenu = $("#dlmenu");
+var MENUS = [{btn:stybtn, menu:stymenu}, {btn:dlbtn, menu:dlmenu}];
+function closeMenus(){ MENUS.forEach(function(o){ o.menu.hidden = true; o.btn.setAttribute("aria-expanded","false"); }); }
+MENUS.forEach(function(o){
+  o.btn.addEventListener("click", function(e){
+    e.stopPropagation();
+    var wasOpen = !o.menu.hidden;
+    closeMenus();
+    if(!wasOpen){
+      o.menu.hidden = false;
+      o.btn.setAttribute("aria-expanded","true");
+      var f = o.menu.querySelector("button");
+      if(f) f.focus();
+    }
+  });
+  o.menu.addEventListener("keydown", function(e){
+    var f = $$(FOC, o.menu), i = f.indexOf(document.activeElement);
+    if(e.key === "ArrowDown"){ e.preventDefault(); if(f[(i+1)%f.length]) f[(i+1)%f.length].focus(); }
+    if(e.key === "ArrowUp"){ e.preventDefault(); if(f[(i-1+f.length)%f.length]) f[(i-1+f.length)%f.length].focus(); }
+  });
+});
+document.addEventListener("click", function(e){
+  var inside = MENUS.some(function(o){ return !o.menu.hidden && (o.menu.contains(e.target) || e.target === o.btn); });
+  if(!inside) closeMenus();
+});
+
+/* ---------- nav ---------- */
+$("#th").addEventListener("click", function(){
+  S.theme = resolvedTheme() === "dark" ? "light" : "dark";   /* cicla sobre lo que se ve */
+  applyChrome(); save();
+});
+$("#filterBtn").addEventListener("click", function(){ S.filter = S.filter ? 0 : 1; update(); });
+$("#rtitle").addEventListener("input", function(){ S.title = this.value; save(); syncIndexName(); paintRoadmapSelect(); });
+
+$("#helpBtn").addEventListener("click", function(){ pushLayer($("#helpModal"), $("#helpBk"), this); });
+$("#helpGotIt").addEventListener("click", function(){ popLayer(); S.help = 1; save(); });
+$("#helpBk").addEventListener("click", popLayer);
+
+$("#reset").addEventListener("click", function(){
+  var rs = roadmapStats();
+  $("#resetList").innerHTML = [
+    ["chk", "Los " + rs.d + " pasos que ya tildaste"],
+    ["eff", "Tus ajustes manuales de estimación"],
+    ["notes", "Tus notas de rama"],
+    ["on", "Las ramas activas (vuelve al estado por defecto)"],
+    ["title", "El nombre de este roadmap"]
+  ].map(function(x){
+    return '<label><input type="checkbox" value="' + x[0] + '"><span>' + esc(x[1]) + '</span></label>';
+  }).join("")
+    + '<label><input type="checkbox" value="roadmap"><span><b>Borrar este roadmap entero</b>'
+    + ' (incluye todo lo de arriba)</span></label>';
+  pushLayer($("#resetModal"), $("#mdBk"), this);
+});
+$("#resetCancel").addEventListener("click", popLayer);
+$("#mdBk").addEventListener("click", popLayer);
+
+$("#rmsel").addEventListener("change", function(){
+  RID = this.value;
+  var st = readState(RID);
+  if(st) S = st;
+  cur = null;
+  applyChrome(); update();
+});
+$("#newbtn").addEventListener("click", function(){
+  $("#newName").value = "";
+  pushLayer($("#newModal"), $("#mdBk"), this);
+});
+$("#newCancel").addEventListener("click", popLayer);
+$("#newGo").addEventListener("click", function(){
+  var name = ($("#newName").value || "").trim() || "Mi roadmap";
+  var st = freshState();
+  st.title = name;
+  BRANCH_IDS.forEach(function(id){ st.on[id] = 0; });   /* arranca vacio: se elige en la config */
+  var id = uid();
+  lsSet(D_KEY(id), JSON.stringify(st));
+  IDX.push({id:id, name:name});
+  writeIdx();
+  RID = id; S = st; cur = null;
+  $("#newName").value = "";
+  popLayer(); applyChrome(); update();
+  pushLayer($("#cfgModal"), $("#mdBk"));                 /* y de una, a elegir que se va a hacer */
+});
+
+/* ---------- configuracion del roadmap ---------- */
+$("#cfgbtn").addEventListener("click", function(){
+  paintPresets();
+  pushLayer($("#cfgModal"), $("#mdBk"), this);
+});
+$("#cfgOk").addEventListener("click", function(){
+  $("#rtitle").dispatchEvent(new Event("input", {bubbles:true}));   /* por si no hubo blur */
+  popLayer();
+});
+
+$("#loadbtn").addEventListener("click", function(){ $("#loadfile").click(); });
+$("#loadfile").addEventListener("change", function(e){
+  var f = e.target.files[0];
+  if(f) handleFile(f);
+  e.target.value = "";
+});
+
+window.addEventListener("resize", scheduleLinks);
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(scheduleLinks);
+
+/* ---------- boot ---------- */
+(function boot(){
+  /* Si este archivo viene de "Exportar → Página autocontenida", el estado va embebido. */
+  var seedEl = document.getElementById("rpd-seed");
+  if(seedEl){
+    try{
+      var seed = JSON.parse(seedEl.textContent);
+      S = mergeFresh(seed.state || {});
+      IDX = (Array.isArray(seed.index) && seed.index.length) ? seed.index : [{id:seed.rid || uid(), name:S.title || "Mi roadmap"}];
+      RID = seed.rid || IDX[0].id;
+      if(!IDX.filter(function(x){ return x.id === RID; }).length) IDX.push({id:RID, name:S.title || "Mi roadmap"});
+      writeIdx(); save();
+      applyChrome(); update();
+      return;
+    }catch(e){ /* si el seed está roto, sigo con el almacenamiento local */ }
+  }
+  ensureRoadmaps();
+  applyChrome();
+  update();
+})();
+
+</script>
+</body>
+</html>
